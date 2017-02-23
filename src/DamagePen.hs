@@ -68,5 +68,3 @@ maxDps =
       (dps,build) = head $ sortBy (flip compare `on` fst) totals
   in
     (show dps)
-
-  --let b = Build { _bpower = 15, _bspeed = 12, _bcrit = 13, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 1, _bblink = 1}

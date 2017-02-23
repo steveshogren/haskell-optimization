@@ -7,7 +7,7 @@ import Data.Monoid ((<>))
 import Data.Aeson (FromJSON, ToJSON)
 import GHC.Generics
 import Web.Scotty
-
+import Network.Wai.Middleware.Static (addBase, noDots, staticPolicy, (>->))
 data User = User { userId :: Int, userName :: String } deriving (Show, Generic)
 instance ToJSON User
 instance FromJSON User
@@ -27,6 +27,9 @@ matchesId id user = userId user == id
 main = do
   putStrLn "Starting Server..."
   scotty 3000 $ do
+
+    middleware $ staticPolicy (noDots >-> addBase "static/images") -- for favicon.ico
+
     get "/hello/:name" $ do
         name <- param "name"
         text ("hello " <> name <> "!")

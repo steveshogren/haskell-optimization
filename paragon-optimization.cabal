@@ -19,6 +19,8 @@ executable paragon-optimization
   default-language:    Haskell2010
   build-depends:       aeson >= 1.0.2.1
                      , base >= 4.7 && < 5
+                     , wai-extra >=3.0.0
+                     , wai-middleware-static
                      , containers >= 0.5.6.2
                      , mtl >= 2.2.1
                      , glpk-hs
