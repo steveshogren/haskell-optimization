@@ -24,11 +24,13 @@ allUsers = [bob, jenny]
 matchesId :: Int -> User -> Bool
 matchesId id user = userId user == id
 
+main :: IO ()
 main = do
   putStrLn "Starting Server..."
   scotty 3000 $ do
 
-    middleware $ staticPolicy (noDots >-> addBase "static/images") -- for favicon.ico
+    -- served like /index.html
+    middleware $ staticPolicy (noDots >-> addBase "static/html")
 
     get "/hello/:name" $ do
         name <- param "name"

@@ -12,3 +12,7 @@
 * Ideally only use libraries from [stackage](https://www.stackage.org/)
 * Add new libraries to `paragon-optimization.cabal`
 * Run `stack build`
+
+## Scotty 
+
+* Some Scotty [basics](http://seanhess.github.io/2015/08/19/practical-haskell-json-api.html)
