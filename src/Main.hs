@@ -39,6 +39,9 @@ main = do
     get "/users" $ do
       json allUsers
 
+    get "/test" $ do
+      json allUsers
+
     get "/users/:id" $ do
       id <- param "id"
       json (filter (matchesId id) allUsers)
