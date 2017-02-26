@@ -39,8 +39,12 @@ main = do
     get "/users" $ do
       json allUsers
 
-    get "/test" $ do
-      json allUsers
+    post "/test" $ do
+      w <- (param "ward") `rescue` (\x -> return False)
+      blink <- (param "blink") `rescue` (\x -> return False)
+      let ward  = if w then "yes" else "no"
+      let blinke  = if blink then "yes" else "no"
+      text ("Ward: " <> ward <> "  -  Blink: " <> blinke )
 
     get "/users/:id" $ do
       id <- param "id"
