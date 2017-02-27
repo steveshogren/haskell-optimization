@@ -1,3 +1,5 @@
 /src/room
 node_modules
 .stack-work
+static/lib/
+static/dist/
