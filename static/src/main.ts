@@ -1,38 +1,25 @@
 import {run} from '@cycle/run';
 import {Stream} from 'xstream';
-import {div, button, h1, h4, a, makeDOMDriver, DOMSource} from '@cycle/dom';
+import {div, button, h1, h4, ul, li, a, makeDOMDriver, DOMSource} from '@cycle/dom';
 import {makeHTTPDriver, Response, HTTPSource} from '@cycle/http';
 
 type UserData = {
-  id: number,
-  name: string,
-  username: string,
-  email: string,
-  address: {
-    street: string,
-    suite: string,
-    city: string,
-    zipcode: string,
-    geo: {
-      lat: string,
-      lng: string,
-    },
-  },
-  phone: string,
-  website: string,
-  company: {
-    name: string,
-    catchPhrase: string,
-    bs: string,
-  },
+  userId: number,
+  userName: string
 };
 
+function renderUser(user :UserData)  {
+    return div('.user-details', [
+        h1('.user-name', user.userName),
+        h4('.user-id', user.userId),
+    ]);
+}
+
 function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
-  const getRandomUser$ = sources.DOM.select('.get-random').events('click')
+  const getUsers$ = sources.DOM.select('.get-users').events('click')
     .map(() => {
-      const randomNum = Math.round(Math.random() * 9) + 1;
       return {
-        url: 'https://jsonplaceholder.typicode.com/users/' + String(randomNum),
+        url: '/users',
         category: 'users',
         method: 'GET',
       };
@@ -40,23 +27,19 @@ function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
 
   const user$ = sources.HTTP.select('users')
     .flatten()
-    .map(res => res.body as UserData)
-    .startWith(null);
+    .map(res => res.body as UserData[])
+    .startWith([]);
 
-  const vdom$ = user$.map(user =>
+  const vdom$ = user$.map(users =>
     div('.users', [
-      button('.get-random', 'Get random user'),
-      user === null ? null : div('.user-details', [
-        h1('.user-name', user.name),
-        h4('.user-email', user.email),
-        a('.user-website', {attrs: {href: user.website}}, user.website),
-      ]),
+        button('.get-users', 'Get users'),
+        ul("userslist", users.map((item, idx) => renderUser(item))),
     ]),
   );
 
   return {
     DOM: vdom$,
-    HTTP: getRandomUser$,
+    HTTP: getUsers$,
   };
 }
 
