@@ -31,6 +31,7 @@ main = do
 
     -- served like /index.html
     middleware $ staticPolicy (noDots >-> addBase "static/html")
+    middleware $ staticPolicy (noDots >-> addBase "static/dist")
 
     get "/hello/:name" $ do
         name <- param "name"
