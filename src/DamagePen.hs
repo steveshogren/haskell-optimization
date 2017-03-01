@@ -1,4 +1,4 @@
-module DamagePen where
+module DamagePen (maxDps) where
 
 import Optimization
 import Data.List
@@ -45,6 +45,7 @@ toBuild (dmg,speed,crit,pen,critbonus) =
         , _bward = 1
         , _bblink = 1}
 
+
 calcIfUnder :: Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> (Double, Build)
 calcIfUnder dmg speed crit pen critbonus max =
   if (dmg + speed + crit + pen + (critbonus * 6)) == max
@@ -53,11 +54,11 @@ calcIfUnder dmg speed crit pen critbonus max =
     in (murdockDps dmg speed crit pen bonus, toBuild (dmg,speed,crit,pen,critbonus))
   else (0, toBuild (0,0,0,0,0))
 
-maxDps =
+maxDps w b =
   let totalPoints = 66
       lifeSteal = 6
-      ward = 1
-      blink = 1
+      ward = if w then 1 else 0
+      blink = if b then 1 else 0
       points = totalPoints - lifeSteal - ward - (5 * blink)
       totals = [ (calcIfUnder dmg speed crit pen critbonus points) |
                  dmg <- [0..30],
@@ -66,5 +67,4 @@ maxDps =
                  pen <- [0..30],
                  critbonus <- [0..1]]
       (dps,build) = head $ sortBy (flip compare `on` fst) totals
-  in
-    (show dps)
+  in build

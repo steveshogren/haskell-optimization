@@ -1,8 +1,11 @@
 {-# LANGUAGE TemplateHaskell #-}
-module Optimization (main
+{-# LANGUAGE DeriveGeneric #-}
+module Optimization (optimize
                     , Build(..)
                     ) where
 
+import GHC.Generics
+import Data.Aeson (FromJSON, ToJSON)
 import Control.Lens
 import Prelude hiding ((*), (/), (+), (-))
 import qualified Data.Map as Map
@@ -153,8 +156,10 @@ data Build = Build {
   _bcrit_bonus :: Integer,
   _bward :: Integer,
   _bblink :: Integer
-  }
+  } deriving (Show, Generic)
 makeLenses ''Build
+instance ToJSON Build
+instance FromJSON Build
 
 totalCXP :: Integer
 totalCXP = 66
@@ -176,7 +181,7 @@ lpCards build = execLPM $ do
   mapM (\(_,n) -> setVarKind n IntVar) $ showAll _power
   mapM (\(_,n) -> varBds n 0 1) $ showAll _power
 
-main = do
+optimize = do
   let b = Build { _bpower = 15, _bspeed = 12, _bcrit = 13, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 1, _bblink = 1}
   x <- glpSolveVars mipDefaults (lpCards b)
   case x of (Success, Just (obj, vars)) -> do

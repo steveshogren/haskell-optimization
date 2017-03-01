@@ -3,15 +3,29 @@ import xs from 'xstream';
 import {div, button, h1, h4, ul, li, p, a, form, input, makeDOMDriver, DOMSource} from '@cycle/dom';
 import {makeHTTPDriver, Response, HTTPSource} from '@cycle/http';
 
-type UserData = {
-    userId: number,
-    userName: string
+type Build = {
+    _bpower: number,
+    _bspeed: number,
+    _bcrit: number,
+    _bpen: number,
+    _blifesteal: number,
+    _bcrit_bonus: number,
+    _bward: number,
+    _bblink: number
 };
 
-function renderUser(user :UserData)  {
+function renderUser(user :Build)  {
     return div('.user-details', [
-        h1('.user-name', user.userName),
-        h4('.user-id', user.userId),
+        ul('.build', [
+            li('.power', user._bpower),
+            li('.speed', user._bspeed),
+            li('.crit', user._bcrit),
+            li('.pen', user._bpen),
+            li('.lifesteal', user._blifesteal),
+            li('.crit_bonus', user._bcrit_bonus),
+            li('.ward', user._bward),
+            li('.blink', user._bblink),
+        ])
     ]);
 }
 
@@ -36,7 +50,7 @@ function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
 
     const user$ = sources.HTTP.select('users')
         .flatten()
-        .map(res => res.body as UserData[])
+        .map(res => [res.body] as Build[])
         .startWith([]);
 
     const state$ = xs.combine(user$, checkers$)
