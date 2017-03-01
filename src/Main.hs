@@ -44,7 +44,7 @@ main = do
         name <- param "name"
         text ("hello " <> name <> "!")
 
-    get "/users" $ do
+    post "/users" $ do
       setting <- jsonData :: ActionM Setting
       json $ DP.maxDps (ward setting) (blink setting)
 

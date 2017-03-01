@@ -33,14 +33,7 @@ function renderInput() {
 }
 
 function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
-    const getUsers$ = sources.DOM.select('.get-users').events('click')
-        .map(() => {
-            return {
-                url: '/users',
-                category: 'users',
-                method: 'GET',
-            };
-        });
+    const userButton$ = sources.DOM.select('.get-users').events('click');
 
     const checkers$ = sources.DOM.select('.checker')
         .events('change')
@@ -48,12 +41,22 @@ function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
             return (ev.target as any).checked;
         }).startWith(false);
 
-    const user$ = sources.HTTP.select('users')
+    const getUsers$ = xs.combine(userButton$, checkers$)
+        .map(([clickedEvent, toggled]) => {
+            return {
+                url: '/users',
+                category: 'users',
+                method: 'POST',
+                send: {blink: true, ward: toggled}
+            };
+        });
+
+    const requestGetUser$ = sources.HTTP.select('users')
         .flatten()
         .map(res => [res.body] as Build[])
         .startWith([]);
 
-    const state$ = xs.combine(user$, checkers$)
+    const state$ = xs.combine(requestGetUser$, checkers$)
         .map(([users, toggled]) => {
             return {users: users, toggled: toggled};
         });
