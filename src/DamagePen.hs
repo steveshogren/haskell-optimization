@@ -35,8 +35,9 @@ dps power_points attack_speed_points crit_points pen crit_damage base_damage bas
 murdockDps :: Integer -> Integer -> Integer -> Integer -> Double -> Double
 murdockDps pwr speed crit pen bonus = dps (fromInteger pwr) (fromInteger speed) (fromInteger crit) (fromInteger pen) bonus 86 1.16 1 15
 
-toBuild (dmg,speed,crit,pen,critbonus) =
+toBuild (dps,dmg,speed,crit,pen,critbonus) =
   Build { _bpower = dmg
+        , _bdps = dps
         , _bspeed = speed
         , _bcrit = crit
         , _bpen = pen
@@ -45,14 +46,17 @@ toBuild (dmg,speed,crit,pen,critbonus) =
         , _bward = 1
         , _bblink = 1}
 
+rounder f n = (fromInteger $ round $ f * (10^n)) / (10.0^^n)
 
-calcIfUnder :: Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> (Double, Build)
+
+calcIfUnder :: Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Build
 calcIfUnder dmg speed crit pen critbonus max =
   if (dmg + speed + crit + pen + (critbonus * 6)) == max
   then
     let bonus = if critbonus == 1 then yesBonusCrit else noBonusCrit
-    in (murdockDps dmg speed crit pen bonus, toBuild (dmg,speed,crit,pen,critbonus))
-  else (0, toBuild (0,0,0,0,0))
+        dpsNum = murdockDps dmg speed crit pen bonus
+    in  toBuild (rounder dpsNum 2, dmg,speed,crit,pen,critbonus)
+  else  toBuild (0,0,0,0,0,0)
 
 maxDps w b =
   let totalPoints = 66
@@ -66,5 +70,5 @@ maxDps w b =
                  crit <- [0..30],
                  pen <- [0..30],
                  critbonus <- [0..1]]
-      (dps,build) = head $ sortBy (flip compare `on` fst) totals
-  in build
+      builds = take 3 $ sortBy (flip compare `on` _bdps) totals
+  in builds

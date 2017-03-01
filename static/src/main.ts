@@ -1,9 +1,10 @@
 import {run} from '@cycle/run';
 import xs from 'xstream';
-import {div, button, h1, h4, ul, li, p, a, form, input, makeDOMDriver, DOMSource} from '@cycle/dom';
+import {div, table, tr, td, th, button, h1, h4, ul, li, p, a, form, input, makeDOMDriver, DOMSource} from '@cycle/dom';
 import {makeHTTPDriver, Response, HTTPSource} from '@cycle/http';
 
 type Build = {
+    _bdps: number,
     _bpower: number,
     _bspeed: number,
     _bcrit: number,
@@ -14,18 +15,17 @@ type Build = {
     _bblink: number
 };
 
-function renderUser(user :Build)  {
-    return div('.user-details', [
-        ul('.build', [
-            li('.power', user._bpower),
-            li('.speed', user._bspeed),
-            li('.crit', user._bcrit),
-            li('.pen', user._bpen),
-            li('.lifesteal', user._blifesteal),
-            li('.crit_bonus', user._bcrit_bonus),
-            li('.ward', user._bward),
-            li('.blink', user._bblink),
-        ])
+function renderDps(build :Build)  {
+    return tr('.build', [
+        td(build._bdps),
+        td('.power', build._bpower),
+        td('.speed', build._bspeed),
+        td('.crit', build._bcrit),
+        td('.pen', build._bpen),
+        td('.lifesteal', build._blifesteal),
+        td('.crit_bonus', build._bcrit_bonus),
+        td('.ward', build._bward),
+        td('.blink', build._bblink),
     ]);
 }
 
@@ -33,49 +33,62 @@ function renderInput() {
 }
 
 function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
-    const userButton$ = sources.DOM.select('.get-users').events('click');
+    const dpsButton$ = sources.DOM.select('.get-dps').events('click');
 
-    const checkers$ = sources.DOM.select('.checker')
+    const ward$ = sources.DOM.select('.ward')
         .events('change')
         .map((ev:Event) => {
             return (ev.target as any).checked;
         }).startWith(false);
 
-    const getUsers$ = xs.combine(userButton$, checkers$)
-        .map(([clickedEvent, toggled]) => {
+    const blink$ = sources.DOM.select('.blink')
+        .events('change')
+        .map((ev:Event) => {
+            return (ev.target as any).checked;
+        }).startWith(false);
+
+    const getDps$ = xs.combine(dpsButton$, ward$, blink$)
+        .map(([clickedEvent, ward, blink]) => {
             return {
-                url: '/users',
-                category: 'users',
+                url: '/dps',
+                category: 'dps',
                 method: 'POST',
-                send: {blink: true, ward: toggled}
+                send: {blink: blink, ward: ward}
             };
         });
 
-    const requestGetUser$ = sources.HTTP.select('users')
+    const requestGetdps$ = sources.HTTP.select('dps')
         .flatten()
-        .map(res => [res.body] as Build[])
+        .map(res => res.body as Build[])
         .startWith([]);
 
-    const state$ = xs.combine(requestGetUser$, checkers$)
-        .map(([users, toggled]) => {
-            return {users: users, toggled: toggled};
+    const state$ = xs.combine(requestGetdps$, ward$, blink$)
+        .map(([dps, ward, blink]) => {
+            return {dps: dps, ward: ward, blink:blink};
         });
 
+    const header = th('.header', [td('power'), td('speed'), td('crit'), td('pen'), td('lifesteal'), td('crit_bonus'), td('ward'), td('blink')]);
+
     const vdom$ = state$
-        .map(({users, toggled}) =>
-             div('.users', [
+        .map(({dps, ward, blink}) =>
+
+             div('.dps', [
                  div([
-                     input('.checker', {attrs: {type: 'checkbox'}}), 'Toggle Me',
-                     p(toggled ? 'ON': 'OFF'),
+                     input('.ward', {attrs: {type: 'checkbox'}}), 'Ward?',
+                     input('.blink', {attrs: {type: 'checkbox'}}), 'Blink?',
                  ]),
-                 button('.get-users', 'Get users'),
-                 ul("userslist", users.map((item, idx) => renderUser(item))),
-             ]),
-            );
+                 button('.get-dps', 'Get dps'),
+
+                 div('.build-details', [
+                     table('.builds',
+                         dps==null?null:dps.map((item, idx) => renderDps(item))
+                     )
+                 ])
+             ]));
 
     return {
         DOM: vdom$,
-        HTTP: getUsers$,
+        HTTP: getDps$,
     };
 }
 

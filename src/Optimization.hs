@@ -148,6 +148,7 @@ twoTypeCardPermutations card =
 -- "rustbreaker(pw:3,pn:5)--11"
 
 data Build = Build {
+  _bdps :: Double,
   _bpower :: Integer,
   _bspeed :: Integer,
   _bcrit :: Integer,
@@ -182,7 +183,7 @@ lpCards build = execLPM $ do
   mapM (\(_,n) -> varBds n 0 1) $ showAll _power
 
 optimize = do
-  let b = Build { _bpower = 15, _bspeed = 12, _bcrit = 13, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 1, _bblink = 1}
+  let b = Build { _bdps = 0, _bpower = 15, _bspeed = 12, _bcrit = 13, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 1, _bblink = 1}
   x <- glpSolveVars mipDefaults (lpCards b)
   case x of (Success, Just (obj, vars)) -> do
                              putStrLn "Success!"
