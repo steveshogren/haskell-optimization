@@ -29,23 +29,19 @@ function renderDps(build :Build)  {
     ]);
 }
 
-function renderInput() {
+function checkboxBoolean(checkbox$ : DOMSource) {
+    return checkbox$
+        .events('change', )
+        .map((ev:Event) => {
+            return (ev.target as any).checked;
+        }).startWith(false);
 }
 
 function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
     const dpsButton$ = sources.DOM.select('.get-dps').events('click');
 
-    const ward$ = sources.DOM.select('.ward')
-        .events('change')
-        .map((ev:Event) => {
-            return (ev.target as any).checked;
-        }).startWith(false);
-
-    const blink$ = sources.DOM.select('.blink')
-        .events('change')
-        .map((ev:Event) => {
-            return (ev.target as any).checked;
-        }).startWith(false);
+    const ward$ = checkboxBoolean(sources.DOM.select('.ward'));
+    const blink$ = checkboxBoolean(sources.DOM.select('.blink'));
 
     const getDps$ = xs.combine(dpsButton$, ward$, blink$)
         .map(([clickedEvent, ward, blink]) => {
@@ -67,24 +63,23 @@ function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
             return {dps: dps, ward: ward, blink:blink};
         });
 
-    const header = th('.header', [td('power'), td('speed'), td('crit'), td('pen'), td('lifesteal'), td('crit_bonus'), td('ward'), td('blink')]);
 
     const vdom$ = state$
-        .map(({dps, ward, blink}) =>
+        .map(({dps, ward, blink}) => {
 
-             div('.dps', [
-                 div([
-                     input('.ward', {attrs: {type: 'checkbox'}}), 'Ward?',
-                     input('.blink', {attrs: {type: 'checkbox'}}), 'Blink?',
-                 ]),
-                 button('.get-dps', 'Get dps'),
+            var header = [tr('.header', [th('power'), th('speed'), th('crit'), th('pen'), th('lifesteal'), th('crit_bonus'), th('ward'), th('blink')])];
+            var tdata = dps==null?[]:dps.map((item, idx) => renderDps(item))
+            return div('.dps', [
+                div([
+                    input('.ward', {attrs: {type: 'checkbox'}}), 'Ward?',
+                    input('.blink', {attrs: {type: 'checkbox'}}), 'Blink?',
+                ]),
+                button('.get-dps', 'Get dps'),
 
-                 div('.build-details', [
-                     table('.builds',
-                         dps==null?null:dps.map((item, idx) => renderDps(item))
-                     )
-                 ])
-             ]));
+                div('.build-details', [
+                    table('.builds', header.concat(tdata))
+                ])
+            ])});
 
     return {
         DOM: vdom$,
