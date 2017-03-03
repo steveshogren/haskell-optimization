@@ -2,6 +2,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 module Optimization (optimize
                     , Build(..)
+                    , HandCard(..)
                     ) where
 
 import GHC.Generics
@@ -147,6 +148,14 @@ twoTypeCardPermutations card =
 -- "brand ironeater(cr:9,ls:0)--12"
 -- "rustbreaker(pw:3,pn:5)--11"
 
+data HandCard = HandCard {
+  count :: Double,
+  info :: String
+  } deriving (Show, Generic)
+
+instance ToJSON HandCard
+instance FromJSON HandCard
+
 data Build = Build {
   _bdps :: Double,
   _bpower :: Integer,
@@ -182,11 +191,22 @@ lpCards build = execLPM $ do
   mapM (\(_,n) -> setVarKind n IntVar) $ showAll _power
   mapM (\(_,n) -> varBds n 0 1) $ showAll _power
 
-optimize = do
+b = Build { _bdps = 0, _bpower = 14, _bspeed = 12, _bcrit = 13, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 1, _bblink = 1}
+
+toHandCard (n, c) = HandCard { info = n, count = c}
+
+optimize :: Build -> IO [HandCard]
+optimize b = do
+  x <- glpSolveVars mipDefaults (lpCards b)
+  case x of (Success, Just (obj, vars)) ->
+              return ((map toHandCard) $ filter (\(name, count) -> count > 0) $ Map.toList vars)
+            (failure, result) -> return []
+
+optimizeManual = do
   let b = Build { _bdps = 0, _bpower = 15, _bspeed = 12, _bcrit = 13, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 1, _bblink = 1}
   x <- glpSolveVars mipDefaults (lpCards b)
   case x of (Success, Just (obj, vars)) -> do
                              putStrLn "Success!"
-                             _ <- mapM (putStrLn . show) (filter (\(name, count) -> count > 0) $ Map.toList vars)
+                             mapM (putStrLn . show) (filter (\(name, count) -> count > 0) $ Map.toList vars)
                              putStrLn "Success!"
             (failure, result) -> putStrLn ("Failure: " ++ (show failure))

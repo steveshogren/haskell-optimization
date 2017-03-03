@@ -3,6 +3,12 @@ import xs from 'xstream';
 import {div, table, tr, td, th, button, h1, h4, ul, li, p, a, form, input, makeDOMDriver, DOMSource} from '@cycle/dom';
 import {makeHTTPDriver, Response, HTTPSource} from '@cycle/http';
 
+type State = {
+    ward: boolean,
+    blink: boolean,
+    dps: number
+};
+
 type Build = {
     _bdps: number,
     _bpower: number,
@@ -26,47 +32,21 @@ function renderDps(build :Build)  {
         td('.crit_bonus', build._bcrit_bonus),
         td('.ward', build._bward),
         td('.blink', build._bblink),
+        button('.optimize', 'Optimize')
     ]);
 }
 
 function checkboxBoolean(checkbox$ : DOMSource) {
     return checkbox$
-        .events('change', )
+        .events('change')
         .map((ev:Event) => {
             return (ev.target as any).checked;
         }).startWith(false);
 }
 
-function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
-    const dpsButton$ = sources.DOM.select('.get-dps').events('click');
-
-    const ward$ = checkboxBoolean(sources.DOM.select('.ward'));
-    const blink$ = checkboxBoolean(sources.DOM.select('.blink'));
-
-    const getDps$ = xs.combine(dpsButton$, ward$, blink$)
-        .map(([clickedEvent, ward, blink]) => {
-            return {
-                url: '/dps',
-                category: 'dps',
-                method: 'POST',
-                send: {blink: blink, ward: ward}
-            };
-        });
-
-    const requestGetdps$ = sources.HTTP.select('dps')
-        .flatten()
-        .map(res => res.body as Build[])
-        .startWith([]);
-
-    const state$ = xs.combine(requestGetdps$, ward$, blink$)
-        .map(([dps, ward, blink]) => {
-            return {dps: dps, ward: ward, blink:blink};
-        });
-
-
-    const vdom$ = state$
+function view(state$ : any) {
+    return state$
         .map(({dps, ward, blink}) => {
-
             var header = [tr('.header', [th('power'), th('speed'), th('crit'), th('pen'), th('lifesteal'), th('crit_bonus'), th('ward'), th('blink')])];
             var tdata = dps==null?[]:dps.map((item, idx) => renderDps(item))
             return div('.dps', [
@@ -79,11 +59,55 @@ function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
                 div('.build-details', [
                     table('.builds', header.concat(tdata))
                 ])
-            ])});
+            ])
+        });
+}
+
+function intent(dom) {
+    const getDpsClicked$  =  dom.select('.get-dps').events('click');
+    const optimizeClicked$  =  dom.select('.optimize').events('click');
+
+    const changeWard$  =  checkboxBoolean(dom.select('.ward'));
+    const changeBlink$  =  checkboxBoolean(dom.select('.blink'));
+
+    const getDps$ = xs.combine(getDpsClicked$, changeWard$, changeBlink$)
+        .map(([clickedEvent, ward, blink]) => {
+            return {
+                url: '/dps',
+                category: 'dps',
+                method: 'POST',
+                send: {blink: blink, ward: ward}
+            };
+        });
+    return {
+        optimizeClicked$ : optimizeClicked$,
+
+        changeWard$ : changeWard$,
+        changeBlink$ : changeBlink$,
+        httpRequest$ : getDps$
+    }
+}
+
+function model(http, actions) {
+    const requestGetdps$ = http.select('dps')
+        .flatten()
+        .map(res => res.body as Build[])
+        .startWith([]);
+    return xs.combine(requestGetdps$, actions.changeWard$, actions.changeBlink$)
+        .map(([dps, ward, blink]) => {
+            return {dps: dps, ward: ward, blink:blink};
+        });
+}
+
+function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
+
+    const actions = intent(sources.DOM);
+    const state$ = model(sources.HTTP, actions);
+    const vdom$ = view(state$);
 
     return {
         DOM: vdom$,
-        HTTP: getDps$,
+        HTTP: actions.httpRequest$,
     };
 }
 
