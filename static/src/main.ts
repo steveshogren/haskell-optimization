@@ -1,6 +1,6 @@
 import {run} from '@cycle/run';
 import xs from 'xstream';
-import {div, table, tr, td, th, button, h1, h4, ul, li, p, a, form, input, makeDOMDriver, DOMSource} from '@cycle/dom';
+import {div, table, tr, td, th, button, h, h1, h4, ul, li, p, a, form, input, makeDOMDriver, DOMSource} from '@cycle/dom';
 import {makeHTTPDriver, Response, HTTPSource} from '@cycle/http';
 
 type State = {
@@ -32,7 +32,7 @@ function renderDps(build :Build)  {
         td('.crit_bonus', build._bcrit_bonus),
         td('.ward', build._bward),
         td('.blink', build._bblink),
-        button('.optimize', 'Optimize')
+        h('button.optimize', {props: {style: 'test'}}, 'Optimize')
     ]);
 }
 
@@ -51,6 +51,7 @@ function view(state$ : any) {
             var tdata = dps==null?[]:dps.map((item, idx) => renderDps(item))
             return div('.dps', [
                 div([
+                    button('.doer', 'OER'),
                     input('.ward', {attrs: {type: 'checkbox'}}), 'Ward?',
                     input('.blink', {attrs: {type: 'checkbox'}}), 'Blink?',
                 ]),
@@ -64,14 +65,21 @@ function view(state$ : any) {
 }
 
 function intent(dom) {
-    const getDpsClicked$  =  dom.select('.get-dps').events('click');
-    const optimizeClicked$  =  dom.select('.optimize').events('click');
+    const getDpsClicked$ = dom.select('.get-dps').events('click');
+    const optimizeClicked$ = dom.select('.optimize')
+        .events('click')
+        .map(event => {
+
+            console.log("test");
+            debugger;
+            return false;
+        }).startWith(false);
 
     const changeWard$  =  checkboxBoolean(dom.select('.ward'));
     const changeBlink$  =  checkboxBoolean(dom.select('.blink'));
 
-    const getDps$ = xs.combine(getDpsClicked$, changeWard$, changeBlink$)
-        .map(([clickedEvent, ward, blink]) => {
+    const getDps$ = xs.combine(optimizeClicked$, getDpsClicked$, changeWard$, changeBlink$)
+        .map(([_, clickedEvent, ward, blink]) => {
             return {
                 url: '/dps',
                 category: 'dps',
@@ -79,6 +87,7 @@ function intent(dom) {
                 send: {blink: blink, ward: ward}
             };
         });
+
     return {
         optimizeClicked$ : optimizeClicked$,
 
