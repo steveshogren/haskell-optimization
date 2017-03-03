@@ -191,7 +191,8 @@ lpCards build = execLPM $ do
   mapM (\(_,n) -> setVarKind n IntVar) $ showAll _power
   mapM (\(_,n) -> varBds n 0 1) $ showAll _power
 
-b = Build { _bdps = 0, _bpower = 14, _bspeed = 12, _bcrit = 13, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 1, _bblink = 1}
+-- b = Build { _bdps = 0, _bpower = 17, _bspeed = 14, _bcrit = 12, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 1, _bblink = 1}
+b = Build {_bdps = 545.04, _bpower = 17, _bspeed = 14, _bcrit = 15, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 0, _bblink = 0}
 
 toHandCard (n, c) = HandCard { info = n, count = c}
 

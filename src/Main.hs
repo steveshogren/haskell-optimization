@@ -16,11 +16,6 @@ data Setting = Setting { blink :: Bool, ward :: Bool } deriving (Show, Generic)
 instance ToJSON Setting
 instance FromJSON Setting
 
--- postsIndex :: ActionT T.Text ConfigM ()
--- postsIndex = do
---     posts <- runDb (selectList [] [])
---     html $ "This many posts!<br>" <> T.pack (show (length (posts :: [Entity BlogPost])))
-
 main :: IO ()
 main = do
   putStrLn "Starting Server..."

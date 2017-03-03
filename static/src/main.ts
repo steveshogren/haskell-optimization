@@ -9,6 +9,11 @@ type State = {
     dps: number
 };
 
+type HandCard = {
+  count : number,
+  info : string
+ }
+
 type Build = {
     _bdps: number,
     _bpower: number,
@@ -32,7 +37,7 @@ function renderDps(build :Build)  {
         td('.crit_bonus', build._bcrit_bonus),
         td('.ward', build._bward),
         td('.blink', build._bblink),
-        h('button.optimize', {props: {style: 'test'}}, 'Optimize')
+        button('.optimize', {attrs: {'data-build': JSON.stringify(build)}}, 'Optimize')
     ]);
 }
 
@@ -46,12 +51,12 @@ function checkboxBoolean(checkbox$ : DOMSource) {
 
 function view(state$ : any) {
     return state$
-        .map(({dps, ward, blink}) => {
-            var header = [tr('.header', [th('power'), th('speed'), th('crit'), th('pen'), th('lifesteal'), th('crit_bonus'), th('ward'), th('blink')])];
+        .map(({hand, dps, ward, blink, optBuild}) => {
+            var header = [tr('.header', [th('dps'), th('power'), th('speed'), th('crit'), th('pen'), th('lifesteal'), th('crit_bonus'), th('ward'), th('blink')])];
             var tdata = dps==null?[]:dps.map((item, idx) => renderDps(item))
+            var hand = hand.map((item, idx) => li([item.count, item.info]))
             return div('.dps', [
                 div([
-                    button('.doer', 'OER'),
                     input('.ward', {attrs: {type: 'checkbox'}}), 'Ward?',
                     input('.blink', {attrs: {type: 'checkbox'}}), 'Blink?',
                 ]),
@@ -59,27 +64,30 @@ function view(state$ : any) {
 
                 div('.build-details', [
                     table('.builds', header.concat(tdata))
-                ])
+                ]),
+
+                ul(hand)
             ])
         });
 }
 
 function intent(dom) {
-    const getDpsClicked$ = dom.select('.get-dps').events('click');
     const optimizeClicked$ = dom.select('.optimize')
         .events('click')
         .map(event => {
+            return {
+                url: '/optimize',
+                category: 'optimize',
+                method: 'POST',
+                send: JSON.parse(event.target.dataset.build)
+            };
+        });
 
-            console.log("test");
-            debugger;
-            return false;
-        }).startWith(false);
+    const changeWard$ = checkboxBoolean(dom.select('.ward'));
+    const changeBlink$ = checkboxBoolean(dom.select('.blink'));
 
-    const changeWard$  =  checkboxBoolean(dom.select('.ward'));
-    const changeBlink$  =  checkboxBoolean(dom.select('.blink'));
-
-    const getDps$ = xs.combine(optimizeClicked$, getDpsClicked$, changeWard$, changeBlink$)
-        .map(([_, clickedEvent, ward, blink]) => {
+    const getDps$ = xs.combine(dom.select('.get-dps').events('click'), changeWard$, changeBlink$)
+        .map(([clickedEvent, ward, blink]) => {
             return {
                 url: '/dps',
                 category: 'dps',
@@ -90,10 +98,9 @@ function intent(dom) {
 
     return {
         optimizeClicked$ : optimizeClicked$,
-
         changeWard$ : changeWard$,
         changeBlink$ : changeBlink$,
-        httpRequest$ : getDps$
+        httpRequest$ : xs.merge(optimizeClicked$, getDps$)
     }
 }
 
@@ -102,9 +109,15 @@ function model(http, actions) {
         .flatten()
         .map(res => res.body as Build[])
         .startWith([]);
-    return xs.combine(requestGetdps$, actions.changeWard$, actions.changeBlink$)
-        .map(([dps, ward, blink]) => {
-            return {dps: dps, ward: ward, blink:blink};
+    const requestOptimize$ = http.select('optimize')
+        .flatten()
+        .map(res => {
+            return res.body as HandCard[]
+        })
+        .startWith([]);
+    return xs.combine(requestOptimize$, requestGetdps$, actions.changeWard$, actions.changeBlink$)
+        .map(([hand, dps, ward, blink]) => {
+            return {hand: hand, dps: dps, ward: ward, blink:blink};
         });
 }
 
