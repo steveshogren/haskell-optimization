@@ -54,7 +54,7 @@ function view(state$ : any) {
         .map(({hand, dps, ward, blink, optBuild}) => {
             var header = [tr('.header', [th('dps'), th('power'), th('speed'), th('crit'), th('pen'), th('lifesteal'), th('crit_bonus'), th('ward'), th('blink')])];
             var tdata = dps==null?[]:dps.map((item, idx) => renderDps(item))
-            var hand = hand.map((item, idx) => li([item.count, item.info]))
+            var hand = hand.length==0?[li("No results")]:hand.map((item, idx) => li([item.count, item.info]))
             return div('.dps', [
                 div([
                     input('.ward', {attrs: {type: 'checkbox'}}), 'Ward?',

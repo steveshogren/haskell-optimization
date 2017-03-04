@@ -123,7 +123,11 @@ cardFields False False False False False card a b = card
 
 showCosts :: (Show a, Show a1) => a -> a1 -> Card -> String
 showCosts ac bc card =
-  (card^.firstType) ++ ":" ++ (show ac) ++ "," ++ (card^.secondType) ++ ":" ++ (show bc) ++ "-"
+  " (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ", " ++ (card^.secondType) ++ ":" ++ (show bc) ++ ")"
+
+formatCardName :: Card -> Integer -> Integer -> Integer -> String
+formatCardName card newCost ac bc =
+  " " ++ (_name card) ++ (showCosts ac bc card) ++ " - " ++ (show newCost)
 
 twoTypeCardPermutations :: Card -> [Card]
 twoTypeCardPermutations card =
@@ -135,8 +139,8 @@ twoTypeCardPermutations card =
       hasAny = hasPower && hasSpeed && hasCrit && hasPen && hasLS
   in concatMap (\c -> map (\(ac, bc) ->
                             let nc = cardFields hasPower hasSpeed hasCrit hasPen hasLS card ac bc
-                                newCost = if hasAny then (nc^.cost) + ac + bc else  (nc^.cost)
-                            in nc { _name =  "s" ++ (show c) ++ "-" ++ (_name nc) ++ (showCosts ac bc nc) ++ "-" ++ (show newCost),
+                                newCost = if hasAny then (nc^.cost) + ac + bc else (nc^.cost)
+                            in nc { _name = formatCardName nc newCost ac bc,
                                     _cost = newCost}) twoCardUpgrades) [1..1]
 
 
