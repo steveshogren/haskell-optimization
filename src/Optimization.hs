@@ -136,13 +136,12 @@ twoTypeCardPermutations card =
       hasCrit = _crit card > 0
       hasPen = _pen card > 0
       hasLS = _lifesteal card > 0
-      hasAny = hasPower && hasSpeed && hasCrit && hasPen && hasLS
+      hasAny = hasPower || hasSpeed || hasCrit || hasPen || hasLS
   in concatMap (\c -> map (\(ac, bc) ->
                             let nc = cardFields hasPower hasSpeed hasCrit hasPen hasLS card ac bc
                                 newCost = if hasAny then (nc^.cost) + ac + bc else (nc^.cost)
                             in nc { _name = formatCardName nc newCost ac bc,
                                     _cost = newCost}) twoCardUpgrades) [1..1]
-
 
 
 -- desired numbers (15,12,13,8.0,11,1)
@@ -182,7 +181,7 @@ totalCards = 6
 
 lpCards :: Build -> LP String Integer
 lpCards build = execLPM $ do
-  leqTo (linCombination (showAll _cost)) totalCXP
+  equalTo (linCombination (showAll _cost)) totalCXP
   geqTo (linCombination (showAll _power)) (build^.bpower)
   geqTo (linCombination (showAll _speed)) (build^.bspeed)
   geqTo (linCombination (showAll _crit)) (build^.bcrit)
@@ -191,7 +190,7 @@ lpCards build = execLPM $ do
   geqTo (linCombination (showAll _crit_bonus)) (build^.bcrit_bonus)
   geqTo (linCombination (showAll _ward)) (build^.bward)
   geqTo (linCombination (showAll _blink)) (build^.bblink)
-  leqTo (linCombination (map (\(_,n) -> (1, n)) $ showAll _power)) totalCards
+  equalTo (linCombination (map (\(_,n) -> (1, n)) $ showAll _power)) totalCards
   mapM (\(_,n) -> setVarKind n IntVar) $ showAll _power
   mapM (\(_,n) -> varBds n 0 1) $ showAll _power
 
