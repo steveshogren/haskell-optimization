@@ -106,24 +106,24 @@ updateFields lens add lens2 add2 n1 n2 =
   (lens +~ add) . (lens2 +~ add2) . (firstType .~ n1) . (secondType .~ n2)
 
 cardFields :: Bool -> Bool -> Bool -> Bool -> Bool -> Card -> Integer -> Integer -> Card
-cardFields True True False False False card a b = updateFields power a speed b "pw" "sp" card
-cardFields True False True False False card a b = updateFields power a crit b "pw" "cr" card
-cardFields True False False True False card a b = updateFields power a pen b "pw" "pn" card
-cardFields True False False False True card a b = updateFields power a lifesteal b "pw" "ls" card
-cardFields False True True False False card a b = updateFields speed a crit b "sp" "cr" card
-cardFields False True False True False card a b = updateFields speed a pen b "sp" "pn" card
-cardFields False True False False True card a b = updateFields speed a lifesteal b "sp" "ls" card
-cardFields False False True True False card a b = updateFields crit a pen b "cr" "pn" card
-cardFields False False True False True card a b = updateFields crit a lifesteal b "cr" "ls" card
-cardFields False False False True True card a b = updateFields pen a lifesteal b "pn" "ls" card
-cardFields False False False False True card a b = updateFields lifesteal a lifesteal b "ls" "ls" card
-cardFields True False False False False card a b = updateFields power a power b "pw" "pw" card
-cardFields False True False False False card a b = updateFields speed a speed b "sp" "sp" card
+cardFields True True False False False card a b = updateFields power a speed b "power" "speed" card
+cardFields True False True False False card a b = updateFields power a crit b "power" "crit" card
+cardFields True False False True False card a b = updateFields power a pen b "power" "pen" card
+cardFields True False False False True card a b = updateFields power a lifesteal b "power" "lifesteal" card
+cardFields False True True False False card a b = updateFields speed a crit b "speed" "crit" card
+cardFields False True False True False card a b = updateFields speed a pen b "speed" "pen" card
+cardFields False True False False True card a b = updateFields speed a lifesteal b "speed" "lifesteal" card
+cardFields False False True True False card a b = updateFields crit a pen b "crit" "pen" card
+cardFields False False True False True card a b = updateFields crit a lifesteal b "crit" "lifesteal" card
+cardFields False False False True True card a b = updateFields pen a lifesteal b "pen" "lifesteal" card
+cardFields False False False False True card a b = updateFields lifesteal a lifesteal b "lifesteal" "lifesteal" card
+cardFields True False False False False card a b = updateFields power a power b "power" "power" card
+cardFields False True False False False card a b = updateFields speed a speed b "speed" "speed" card
 cardFields False False False False False card a b = card
 
 showCosts :: (Show a, Show a1) => a -> a1 -> Card -> String
 showCosts ac bc card =
-  " (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ", " ++ (card^.secondType) ++ ":" ++ (show bc) ++ ")"
+  " Buying: (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ", " ++ (card^.secondType) ++ ":" ++ (show bc) ++ ")"
 
 formatCardName :: Card -> Integer -> Integer -> Integer -> String
 formatCardName card newCost ac bc =
