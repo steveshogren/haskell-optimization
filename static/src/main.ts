@@ -58,7 +58,7 @@ function view(state$ : any) {
         .map(({hand, dps, ward, blink, optBuild, lifesteal, loading}) => {
             var header = [tr('.header', [th('dps'), th('power'), th('speed'), th('crit'), th('pen'), th('lifesteal'), th('crit_bonus'), th('ward'), th('blink')])];
             var tdata = dps==null?[]:dps.map((item, idx) => renderDps(item))
-            var hand = ul(hand.length==0?[li("No results")]:hand.map((item, idx) => li([item.count, item.info])))
+            var hand = ul(hand.length==0?[]:hand.map((item, idx) => li([item.count, item.info])))
 
             return div('.dps', [
                 div([
@@ -100,7 +100,7 @@ function intent(dom) {
         }).startWith(0);
 
 
-    const getDps$ = xs.combine(dom.select('.get-dps').events('click'), changeWard$, changeBlink$, changeLs$)
+    const dpsRequest$ = xs.combine(dom.select('.get-dps').events('click'), changeWard$, changeBlink$, changeLs$)
         .map(([clickedEvent, ward, blink, ls]) => {
             return {
                 url: '/dps',
@@ -112,15 +112,16 @@ function intent(dom) {
 
     return {
         optimizeRequest$ : optimizeRequest$,
+        dpsRequest$ : dpsRequest$,
         changeWard$ : changeWard$,
         changeBlink$ : changeBlink$,
         changeLs$ : changeLs$,
-        httpRequest$ : xs.merge(optimizeRequest$, getDps$)
+        httpRequest$ : xs.merge(optimizeRequest$, dpsRequest$)
     }
 }
 
 function model(http, actions) {
-    const requestGetdps$ = http.select('dps')
+    const dpsResponse$ = http.select('dps')
         .flatten()
         .map(res => res.body as Build[])
         .startWith([]);
@@ -131,10 +132,15 @@ function model(http, actions) {
         })
         .startWith([]);
 
-    const loading$ = xs.merge(actions.optimizeRequest$.mapTo(true), optimizeResponse$.mapTo(false))
+    const loadingOptimize$ = xs.merge(actions.optimizeRequest$.mapTo(true),
+                                      optimizeResponse$.mapTo(false),
+                                      actions.dpsRequest$.mapTo(true),
+                                      dpsResponse$.mapTo(false))
         .startWith(false);
 
-    return xs.combine(optimizeResponse$, requestGetdps$, actions.changeWard$, actions.changeBlink$, actions.changeLs$, loading$)
+    const dpsValues$ = xs.merge(dpsResponse$, actions.dpsRequest$.mapTo([]));
+
+    return xs.combine(optimizeResponse$, dpsValues$, actions.changeWard$, actions.changeBlink$, actions.changeLs$, loadingOptimize$)
         .map(([hand, dps, ward, blink, ls, loading]) => {
             return {hand: hand, dps: dps, ward: ward, blink:blink, lifesteal: ls, loading:loading};
         });
