@@ -1,6 +1,6 @@
 import {run} from '@cycle/run';
 import xs from 'xstream';
-import {div, table, tr, td, th, button, h, h1, h4, ul, li, p, a, form, input, makeDOMDriver, DOMSource} from '@cycle/dom';
+import {div, table, tr, td, th, select, option,button, h, h1, h4, ul, li, p, a, form, input, makeDOMDriver, DOMSource} from '@cycle/dom';
 import {makeHTTPDriver, Response, HTTPSource} from '@cycle/http';
 
 type State = {
@@ -49,16 +49,22 @@ function checkboxBoolean(checkbox$ : DOMSource) {
         }).startWith(false);
 }
 
+function lifeStealDropDown() {
+    return input('.ls', {attrs: {type: 'number', min:0, max:20}}, 0)
+}
+
 function view(state$ : any) {
     return state$
-        .map(({hand, dps, ward, blink, optBuild}) => {
+        .map(({hand, dps, ward, blink, optBuild, lifesteal, loading}) => {
             var header = [tr('.header', [th('dps'), th('power'), th('speed'), th('crit'), th('pen'), th('lifesteal'), th('crit_bonus'), th('ward'), th('blink')])];
             var tdata = dps==null?[]:dps.map((item, idx) => renderDps(item))
-            var hand = hand.length==0?[li("No results")]:hand.map((item, idx) => li([item.count, item.info]))
+            var hand = ul(hand.length==0?[li("No results")]:hand.map((item, idx) => li([item.count, item.info])))
+
             return div('.dps', [
                 div([
-                    input('.ward', {attrs: {type: 'checkbox'}}), 'Ward?',
-                    input('.blink', {attrs: {type: 'checkbox'}}), 'Blink?',
+                    div([input('.ward', {attrs: {type: 'checkbox'}}), 'Ward?']),
+                    div([input('.blink', {attrs: {type: 'checkbox'}}), 'Blink?']),
+                    div([lifeStealDropDown(), 'Lifesteal'])
                 ]),
                 button('.get-dps', 'Get dps'),
 
@@ -66,13 +72,14 @@ function view(state$ : any) {
                     table('.builds', header.concat(tdata))
                 ]),
 
-                ul(hand)
+                (loading? "Loading" : hand)
+
             ])
         });
 }
 
 function intent(dom) {
-    const optimizeClicked$ = dom.select('.optimize')
+    const optimizeRequest$ = dom.select('.optimize')
         .events('click')
         .map(event => {
             return {
@@ -85,22 +92,30 @@ function intent(dom) {
 
     const changeWard$ = checkboxBoolean(dom.select('.ward'));
     const changeBlink$ = checkboxBoolean(dom.select('.blink'));
+    const changeLs$ = dom.select('.ls')
+        .events('change')
+        .map((ev:Event) => {
+            var i = parseInt((ev.target as any).value);
+            return i || 0;
+        }).startWith(0);
 
-    const getDps$ = xs.combine(dom.select('.get-dps').events('click'), changeWard$, changeBlink$)
-        .map(([clickedEvent, ward, blink]) => {
+
+    const getDps$ = xs.combine(dom.select('.get-dps').events('click'), changeWard$, changeBlink$, changeLs$)
+        .map(([clickedEvent, ward, blink, ls]) => {
             return {
                 url: '/dps',
                 category: 'dps',
                 method: 'POST',
-                send: {blink: blink, ward: ward}
+                send: {blink: blink, ward: ward, lifesteal: ls}
             };
         });
 
     return {
-        optimizeClicked$ : optimizeClicked$,
+        optimizeRequest$ : optimizeRequest$,
         changeWard$ : changeWard$,
         changeBlink$ : changeBlink$,
-        httpRequest$ : xs.merge(optimizeClicked$, getDps$)
+        changeLs$ : changeLs$,
+        httpRequest$ : xs.merge(optimizeRequest$, getDps$)
     }
 }
 
@@ -109,15 +124,19 @@ function model(http, actions) {
         .flatten()
         .map(res => res.body as Build[])
         .startWith([]);
-    const requestOptimize$ = http.select('optimize')
+    const optimizeResponse$ = http.select('optimize')
         .flatten()
         .map(res => {
             return res.body as HandCard[]
         })
         .startWith([]);
-    return xs.combine(requestOptimize$, requestGetdps$, actions.changeWard$, actions.changeBlink$)
-        .map(([hand, dps, ward, blink]) => {
-            return {hand: hand, dps: dps, ward: ward, blink:blink};
+
+    const loading$ = xs.merge(actions.optimizeRequest$.mapTo(true), optimizeResponse$.mapTo(false))
+        .startWith(false);
+
+    return xs.combine(optimizeResponse$, requestGetdps$, actions.changeWard$, actions.changeBlink$, actions.changeLs$, loading$)
+        .map(([hand, dps, ward, blink, ls, loading]) => {
+            return {hand: hand, dps: dps, ward: ward, blink:blink, lifesteal: ls, loading:loading};
         });
 }
 

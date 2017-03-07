@@ -12,7 +12,7 @@ import qualified Optimization as OP
 import qualified DamagePen as DP
 import Network.Wai.Middleware.Static (addBase, noDots, staticPolicy, (>->))
 
-data Setting = Setting { blink :: Bool, ward :: Bool } deriving (Show, Generic)
+data Setting = Setting { blink :: Bool, ward :: Bool, lifesteal :: Integer} deriving (Show, Generic)
 instance ToJSON Setting
 instance FromJSON Setting
 
@@ -27,7 +27,7 @@ main = do
 
     post "/dps" $ do
       setting <- jsonData :: ActionM Setting
-      json $ DP.maxDps (ward setting) (blink setting)
+      json $ DP.maxDps (ward setting) (blink setting) (lifesteal setting)
 
     post "/optimize" $ do
       build <- jsonData :: ActionM OP.Build

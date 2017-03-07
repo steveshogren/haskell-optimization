@@ -25,8 +25,8 @@ upgradeTypes _ = (3, "b")
 flattenPermutations :: [(Integer, String)] -> (Integer, Integer)
 flattenPermutations = foldl (\(ac, bc) (cost, t) -> if (t == "a") then (ac+cost, bc) else (ac,bc+cost)) (0, 0)
 
--- addName :: (Show a, Show a1) => (a, a1) -> (a, a1, [Char])
--- addName (ac, bc) = (ac, bc, "-" ++ (show ac) ++ "-" ++ (show bc) )
+oneCardUpgrades :: [Integer]
+oneCardUpgrades = [0..9]
 
 twoCardUpgrades :: [(Integer, Integer)]
 twoCardUpgrades =
@@ -121,13 +121,25 @@ cardFields True False False False False card a b = updateFields power a power b 
 cardFields False True False False False card a b = updateFields speed a speed b "speed" "speed" card
 cardFields False False False False False card a b = card
 
-showCosts :: (Show a, Show a1) => a -> a1 -> Card -> String
-showCosts ac bc card =
-  " Buying: (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ", " ++ (card^.secondType) ++ ":" ++ (show bc) ++ ")"
+formatCardName :: Bool -> Card -> Integer -> Integer -> Integer -> String
+formatCardName hasAny card newCost ac bc =
+  let costs = " (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ", " ++ (card^.secondType) ++ ":" ++ (show bc) ++ ")"
+  in " " ++ (_name card) ++ if hasAny then costs else "" ++ " - " ++ (show newCost)
 
-formatCardName :: Card -> Integer -> Integer -> Integer -> String
-formatCardName card newCost ac bc =
-  " " ++ (_name card) ++ (showCosts ac bc card) ++ " - " ++ (show newCost)
+xor a b = (a || b) && not (a && b)
+
+oneTypeCardPermutations :: Card -> [Card]
+oneTypeCardPermutations card =
+  let hasPower = _power card > 0
+      hasSpeed = _speed card > 0
+      hasCrit = _crit card > 0
+      hasPen = _pen card > 0
+      hasLS = _lifesteal card > 0
+  in concatMap (\c -> map (\(type1Cost) ->
+                            let nc = cardFields hasPower hasSpeed hasCrit hasPen hasLS card type1Cost 0
+                                newCost = (nc^.cost) + type1Cost
+                            in nc { _name = formatCardName True nc newCost type1Cost 0,
+                                    _cost = newCost}) oneCardUpgrades) [1..1]
 
 twoTypeCardPermutations :: Card -> [Card]
 twoTypeCardPermutations card =
@@ -137,11 +149,16 @@ twoTypeCardPermutations card =
       hasPen = _pen card > 0
       hasLS = _lifesteal card > 0
       hasAny = hasPower || hasSpeed || hasCrit || hasPen || hasLS
-  in concatMap (\c -> map (\(ac, bc) ->
-                            let nc = cardFields hasPower hasSpeed hasCrit hasPen hasLS card ac bc
-                                newCost = if hasAny then (nc^.cost) + ac + bc else (nc^.cost)
-                            in nc { _name = formatCardName nc newCost ac bc,
-                                    _cost = newCost}) twoCardUpgrades) [1..1]
+      hasOne  = hasPower `xor` hasSpeed `xor` hasCrit `xor` hasPen `xor` hasLS
+  in
+    if hasOne then oneTypeCardPermutations card
+    else if not hasAny then [card { _name = formatCardName False card (card^.cost) 0 0}]
+    else concatMap (\c -> map (\(type1Cost, type2Cost) ->
+                                 let nc = cardFields hasPower hasSpeed hasCrit hasPen hasLS card type1Cost type2Cost
+                                     newCost = if hasAny then (nc^.cost) + type1Cost + type2Cost else (nc^.cost)
+                                 in nc { _name = formatCardName hasAny nc newCost type1Cost type2Cost,
+                                         _cost = newCost})
+                          twoCardUpgrades) [1..1]
 
 
 -- desired numbers (15,12,13,8.0,11,1)
@@ -175,7 +192,7 @@ instance ToJSON Build
 instance FromJSON Build
 
 totalCXP :: Integer
-totalCXP = 66
+totalCXP = 60
 totalCards :: Integer
 totalCards = 6
 

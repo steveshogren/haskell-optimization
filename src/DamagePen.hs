@@ -35,13 +35,13 @@ dps power_points attack_speed_points crit_points pen crit_damage base_damage bas
 murdockDps :: Integer -> Integer -> Integer -> Integer -> Double -> Double
 murdockDps pwr speed crit pen bonus = dps (fromInteger pwr) (fromInteger speed) (fromInteger crit) (fromInteger pen) bonus 86 1.16 1 15
 
-toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink) =
+toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink, ls) =
   Build { _bpower = dmg
         , _bdps = dps
         , _bspeed = speed
         , _bcrit = crit
         , _bpen = pen
-        , _blifesteal = 6
+        , _blifesteal = ls
         , _bcrit_bonus = critbonus
         , _bward = ward
         , _bblink = blink}
@@ -49,22 +49,23 @@ toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink) =
 rounder f n = (fromInteger $ round $ f * (10^n)) / (10.0^^n)
 
 
-calcIfUnder :: Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Build
-calcIfUnder dmg speed crit pen critbonus max ward blink =
+calcIfUnder :: Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Build
+calcIfUnder dmg speed crit pen critbonus max ward blink ls =
   if (dmg + speed + crit + pen + (critbonus * 6)) == max
   then
     let bonus = if critbonus == 1 then yesBonusCrit else noBonusCrit
         dpsNum = murdockDps dmg speed crit pen bonus
-    in  toBuild (rounder dpsNum 2, dmg,speed,crit,pen,critbonus, ward, blink)
-  else  toBuild (0,0,0,0,0,0,0,0)
+    in toBuild (rounder dpsNum 0, dmg,speed,crit,pen,critbonus, ward, blink, ls)
+  else toBuild (0,0,0,0,0,0,0,0, 0)
 
-maxDps w b =
-  let totalPoints = 66
-      lifeSteal = 6
+-- wards, blink, and crit bonus take up (+1) because of the missed opportunity cost
+-- of the "completed" bonus another card would offer
+maxDps w b lifeSteal =
+  let totalPoints = 60 -- counts the bonus +1 of the 6 cards
       ward = if w then 1 else 0
       blink = if b then 1 else 0
-      points = totalPoints - lifeSteal - ward - (5 * blink)
-      totals = [ (calcIfUnder dmg speed crit pen critbonus points ward blink) |
+      points = totalPoints - lifeSteal - (2 * ward) - (6 * blink)
+      totals = [ (calcIfUnder dmg speed crit pen critbonus points ward blink lifeSteal) |
                  dmg <- [0..30],
                  speed <- [0..30],
                  crit <- [0..30],
