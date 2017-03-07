@@ -14,28 +14,38 @@ import Data.LinearProgram as DLP
 import Data.List
 import qualified Data.Set as Set
 
-upgradeTypes :: (Eq a, Num t, Num a) => a -> (t, [Char])
-upgradeTypes 1 = (1, "a")
-upgradeTypes 2 = (2, "a")
-upgradeTypes 3 = (3, "a")
-upgradeTypes 4 = (1, "b")
-upgradeTypes 5 = (2, "b")
-upgradeTypes _ = (3, "b")
+-- Types
 
-flattenPermutations :: [(Integer, String)] -> (Integer, Integer)
-flattenPermutations = foldl (\(ac, bc) (cost, t) -> if (t == "a") then (ac+cost, bc) else (ac,bc+cost)) (0, 0)
+-- -- Hand Card
+data HandCard = HandCard {
+  count :: Double,
+  info :: String
+  } deriving (Show, Generic)
 
-oneCardUpgrades :: [Integer]
-oneCardUpgrades = [3..9]
+instance ToJSON HandCard
+instance FromJSON HandCard
 
-twoCardUpgrades :: [(Integer, Integer)]
-twoCardUpgrades =
-  let types = Set.toList $ Set.fromList $
-                map ((map upgradeTypes) . sort) [ [x,y,z]
-                          | x <- [1..6],
-                            y <- [1..6],
-                            z <- [1..6]]
-  in map (flattenPermutations) types
+toHandCard :: (String, Double) -> HandCard
+toHandCard (n, c) = HandCard { info = n, count = c}
+
+-- -- Build
+
+data Build = Build {
+  _bdps :: Double,
+  _bpower :: Integer,
+  _bspeed :: Integer,
+  _bcrit :: Integer,
+  _bpen :: Integer,
+  _blifesteal :: Integer,
+  _bcrit_bonus :: Integer,
+  _bward :: Integer,
+  _bblink :: Integer
+  } deriving (Show, Generic)
+makeLenses ''Build
+instance ToJSON Build
+instance FromJSON Build
+
+-- -- Card
 
 data Card = Card
     { _cost :: Integer
@@ -91,13 +101,40 @@ mainCards =
     ]
     (map (\a -> [a]) ['a'..])
 
-showOne :: (Card -> t) -> [Card] -> [(t, String)]
-showOne fn permutations =
+type OptTuple t = (t, String)
+
+-- Logic
+
+upgradeTypes :: (Eq a, Num t, Num a) => a -> (t, [Char])
+upgradeTypes 1 = (1, "a")
+upgradeTypes 2 = (2, "a")
+upgradeTypes 3 = (3, "a")
+upgradeTypes 4 = (1, "b")
+upgradeTypes 5 = (2, "b")
+upgradeTypes _ = (3, "b")
+
+flattenPermutations :: [(Integer, String)] -> (Integer, Integer)
+flattenPermutations = foldl (\(ac, bc) (cost, t) -> if (t == "a") then (ac+cost, bc) else (ac,bc+cost)) (0, 0)
+
+oneCardUpgrades :: [Integer]
+oneCardUpgrades = [3..9]
+
+twoCardUpgrades :: [(Integer, Integer)]
+twoCardUpgrades =
+  let types = Set.toList $ Set.fromList $
+                map ((map upgradeTypes) . sort) [ [x,y,z]
+                          | x <- [1..6],
+                            y <- [1..6],
+                            z <- [1..6]]
+  in map (flattenPermutations) types
+
+convertCardsToOptTuples :: (Card -> t) -> [Card] -> [OptTuple t]
+convertCardsToOptTuples fn permutations =
   map (\next -> (fn next, (_name next))) permutations
 
-showAll :: (Card -> t) -> [(t, String)]
-showAll fn =
-  foldl (\ret card -> ret ++ (showOne fn (twoTypeCardPermutations card))) [] mainCards
+collectAllPermutations :: (Card -> t) -> [OptTuple t]
+collectAllPermutations fn =
+  foldl (\ret card -> ret ++ (convertCardsToOptTuples fn (cardPermutations card))) [] mainCards
 
 type CardSetter = ASetter Card Card Integer Integer
 
@@ -129,6 +166,7 @@ formatCardName hasAny card newCost ac bc =
                 " (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ", " ++ (card^.secondType) ++ ":" ++ (show bc) ++ ")"
   in " " ++ (_name card) ++ if hasAny then costs else "" ++ " - " ++ (show newCost)
 
+xor :: Bool -> Bool -> Bool
 xor a b = (a || b) && not (a && b)
 
 oneTypeCardPermutations :: Card -> [Card]
@@ -144,8 +182,8 @@ oneTypeCardPermutations card =
                             in nc { _name = formatCardName True nc newCost type1Cost 0,
                                     _cost = newCost}) oneCardUpgrades) [1..1]
 
-twoTypeCardPermutations :: Card -> [Card]
-twoTypeCardPermutations card =
+cardPermutations :: Card -> [Card]
+cardPermutations card =
   let hasPower = _power card > 0
       hasSpeed = _speed card > 0
       hasCrit = _crit card > 0
@@ -163,29 +201,6 @@ twoTypeCardPermutations card =
                                          _cost = newCost})
                           twoCardUpgrades) [1..1]
 
-data HandCard = HandCard {
-  count :: Double,
-  info :: String
-  } deriving (Show, Generic)
-
-instance ToJSON HandCard
-instance FromJSON HandCard
-
-data Build = Build {
-  _bdps :: Double,
-  _bpower :: Integer,
-  _bspeed :: Integer,
-  _bcrit :: Integer,
-  _bpen :: Integer,
-  _blifesteal :: Integer,
-  _bcrit_bonus :: Integer,
-  _bward :: Integer,
-  _bblink :: Integer
-  } deriving (Show, Generic)
-makeLenses ''Build
-instance ToJSON Build
-instance FromJSON Build
-
 totalCXP :: Integer
 totalCXP = 60
 totalCards :: Integer
@@ -193,20 +208,18 @@ totalCards = 6
 
 lpCards :: Build -> LP String Integer
 lpCards build = execLPM $ do
-  equalTo (linCombination (showAll _cost)) totalCXP
-  geqTo (linCombination (showAll _power)) (build^.bpower)
-  geqTo (linCombination (showAll _speed)) (build^.bspeed)
-  geqTo (linCombination (showAll _crit)) (build^.bcrit)
-  geqTo (linCombination (showAll _pen)) (build^.bpen)
-  geqTo (linCombination (showAll _lifesteal)) (build^.blifesteal)
-  geqTo (linCombination (showAll _crit_bonus)) (build^.bcrit_bonus)
-  geqTo (linCombination (showAll _ward)) (build^.bward)
-  geqTo (linCombination (showAll _blink)) (build^.bblink)
-  equalTo (linCombination (map (\(_,n) -> (1, n)) $ showAll _power)) totalCards
-  mapM (\(_,n) -> setVarKind n IntVar) $ showAll _power
-  mapM (\(_,n) -> varBds n 0 1) $ showAll _power
-
-toHandCard (n, c) = HandCard { info = n, count = c}
+  equalTo (linCombination (collectAllPermutations _cost)) totalCXP
+  geqTo (linCombination (collectAllPermutations _power)) (build^.bpower)
+  geqTo (linCombination (collectAllPermutations _speed)) (build^.bspeed)
+  geqTo (linCombination (collectAllPermutations _crit)) (build^.bcrit)
+  geqTo (linCombination (collectAllPermutations _pen)) (build^.bpen)
+  geqTo (linCombination (collectAllPermutations _lifesteal)) (build^.blifesteal)
+  geqTo (linCombination (collectAllPermutations _crit_bonus)) (build^.bcrit_bonus)
+  geqTo (linCombination (collectAllPermutations _ward)) (build^.bward)
+  geqTo (linCombination (collectAllPermutations _blink)) (build^.bblink)
+  equalTo (linCombination (map (\(_,n) -> (1, n)) $ collectAllPermutations _power)) totalCards
+  mapM (\(_,n) -> setVarKind n IntVar) $ collectAllPermutations _power
+  mapM (\(_,n) -> varBds n 0 1) $ collectAllPermutations _power
 
 optimize :: Build -> IO [HandCard]
 optimize b = do
@@ -217,12 +230,3 @@ optimize b = do
                    return [toHandCard("Combination impossible", 0)]
                  else return cards
             (failure, result) -> return []
-
-optimizeManual = do
-  let b = Build { _bdps = 0, _bpower = 15, _bspeed = 12, _bcrit = 13, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 1, _bblink = 1}
-  x <- glpSolveVars mipDefaults (lpCards b)
-  case x of (Success, Just (obj, vars)) -> do
-                             putStrLn "Success!"
-                             mapM (putStrLn . show) (filter (\(name, count) -> count > 0) $ Map.toList vars)
-                             putStrLn "Success!"
-            (failure, result) -> putStrLn ("Failure: " ++ (show failure))

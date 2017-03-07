@@ -139,8 +139,9 @@ function model(http, actions) {
         .startWith(false);
 
     const dpsValues$ = xs.merge(dpsResponse$, actions.dpsRequest$.mapTo([]));
+    const optimizeValues$ = xs.merge(optimizeResponse$, dpsResponse$.mapTo([]));
 
-    return xs.combine(optimizeResponse$, dpsValues$, actions.changeWard$, actions.changeBlink$, actions.changeLs$, loadingOptimize$)
+    return xs.combine(optimizeValues$, dpsValues$, actions.changeWard$, actions.changeBlink$, actions.changeLs$, loadingOptimize$)
         .map(([hand, dps, ward, blink, ls, loading]) => {
             return {hand: hand, dps: dps, ward: ward, blink:blink, lifesteal: ls, loading:loading};
         });
