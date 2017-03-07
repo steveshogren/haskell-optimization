@@ -26,7 +26,7 @@ flattenPermutations :: [(Integer, String)] -> (Integer, Integer)
 flattenPermutations = foldl (\(ac, bc) (cost, t) -> if (t == "a") then (ac+cost, bc) else (ac,bc+cost)) (0, 0)
 
 oneCardUpgrades :: [Integer]
-oneCardUpgrades = [0..9]
+oneCardUpgrades = [3..9]
 
 twoCardUpgrades :: [(Integer, Integer)]
 twoCardUpgrades =
@@ -123,7 +123,10 @@ cardFields False False False False False card a b = card
 
 formatCardName :: Bool -> Card -> Integer -> Integer -> Integer -> String
 formatCardName hasAny card newCost ac bc =
-  let costs = " (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ", " ++ (card^.secondType) ++ ":" ++ (show bc) ++ ")"
+  let costs = if (card^.firstType) == (card^.secondType) then
+                " (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ")"
+              else
+                " (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ", " ++ (card^.secondType) ++ ":" ++ (show bc) ++ ")"
   in " " ++ (_name card) ++ if hasAny then costs else "" ++ " - " ++ (show newCost)
 
 xor a b = (a || b) && not (a && b)
@@ -159,14 +162,6 @@ twoTypeCardPermutations card =
                                  in nc { _name = formatCardName hasAny nc newCost type1Cost type2Cost,
                                          _cost = newCost})
                           twoCardUpgrades) [1..1]
-
-
--- desired numbers (15,12,13,8.0,11,1)
--- "blast harness(sp:0,sp:5)--11"
--- "brand ironeater(cr:2,ls:6)--11"
--- "rustbreaker(pw:6,pn:1)--10"
--- "brand ironeater(cr:9,ls:0)--12"
--- "rustbreaker(pw:3,pn:5)--11"
 
 data HandCard = HandCard {
   count :: Double,
@@ -211,16 +206,16 @@ lpCards build = execLPM $ do
   mapM (\(_,n) -> setVarKind n IntVar) $ showAll _power
   mapM (\(_,n) -> varBds n 0 1) $ showAll _power
 
--- b = Build { _bdps = 0, _bpower = 17, _bspeed = 14, _bcrit = 12, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 1, _bblink = 1}
-b = Build {_bdps = 545.04, _bpower = 17, _bspeed = 14, _bcrit = 15, _bpen = 8, _blifesteal = 6, _bcrit_bonus = 1, _bward = 0, _bblink = 0}
-
 toHandCard (n, c) = HandCard { info = n, count = c}
 
 optimize :: Build -> IO [HandCard]
 optimize b = do
   x <- glpSolveVars mipDefaults (lpCards b)
   case x of (Success, Just (obj, vars)) ->
-              return ((map toHandCard) $ filter (\(name, count) -> count > 0) $ Map.toList vars)
+              let cards = (map toHandCard) $ filter (\(name, count) -> count > 0) $ Map.toList vars
+              in if null cards then
+                   return [toHandCard("Combination impossible", 0)]
+                 else return cards
             (failure, result) -> return []
 
 optimizeManual = do
