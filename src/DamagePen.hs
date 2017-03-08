@@ -58,13 +58,14 @@ calcIfUnder dmg speed crit pen critbonus max ward blink ls =
     in toBuild (rounder dpsNum 0, dmg,speed,crit,pen,critbonus, ward, blink, ls)
   else toBuild (0,0,0,0,0,0,0,0, 0)
 
--- wards, blink, and crit bonus take up (+1) because of the missed opportunity cost
--- of the "completed" bonus another card would offer
+-- wards, blink, and crit bonus take up extra because of the missed opportunity cost
+-- of the "completed" bonus another card would offer. Wards are 3cxp for 2pwr, so
+-- (-2 a full power card and -1 for opportunty)
 maxDps w b lifeSteal =
-  let totalPoints = 60 -- counts the bonus +1 of the 6 cards
+  let totalPoints = 66 -- counts the bonus +1 of the 6 cards
       ward = if w then 1 else 0
       blink = if b then 1 else 0
-      points = totalPoints - lifeSteal - (2 * ward) - (6 * blink)
+      points = totalPoints - lifeSteal - (3 * ward) - (6 * blink)
       totals = [ (calcIfUnder dmg speed crit pen critbonus points ward blink lifeSteal) |
                  dmg <- [0..30],
                  speed <- [0..30],

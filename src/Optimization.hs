@@ -161,9 +161,9 @@ cardFields False False False False False card a b = card
 formatCardName :: Bool -> Card -> Integer -> Integer -> Integer -> String
 formatCardName hasAny card newCost ac bc =
   let costs = if (card^.firstType) == (card^.secondType) then
-                " (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ")"
+                " (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ") " ++ (show $ (card^.cost) + ac)
               else
-                " (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ", " ++ (card^.secondType) ++ ":" ++ (show bc) ++ ")"
+                " (" ++ (card^.firstType) ++ ":" ++ (show ac) ++ ", " ++ (card^.secondType) ++ ":" ++ (show bc) ++ ") " ++ (show $ (card^.cost) + ac + bc)
   in " " ++ (_name card) ++ if hasAny then costs else "" ++ " - " ++ (show newCost)
 
 xor :: Bool -> Bool -> Bool
