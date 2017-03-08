@@ -2,6 +2,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 module Optimization (optimize
                     , Build(..)
+                    , toBuild
                     , HandCard(..)
                     ) where
 
@@ -44,6 +45,17 @@ data Build = Build {
 makeLenses ''Build
 instance ToJSON Build
 instance FromJSON Build
+
+toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink, ls) =
+  Build { _bpower = dmg
+        , _bdps = dps
+        , _bspeed = speed
+        , _bcrit = crit
+        , _bpen = pen
+        , _blifesteal = ls
+        , _bcrit_bonus = critbonus
+        , _bward = ward
+        , _bblink = blink}
 
 -- -- Card
 

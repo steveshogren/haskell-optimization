@@ -1,9 +1,22 @@
+{-# LANGUAGE TemplateHaskell #-}
 module DamagePen (maxDps) where
 
+import Control.Lens
 import Optimization
 import Data.List
 import Data.Ord
 import Data.Function (on)
+
+data Hero = Hero {
+  _base_damage :: Double,
+  _base_attack_speed :: Double,
+  _scaling :: Double,
+  _lvl :: Double
+  } deriving (Show, Eq)
+makeLenses ''Hero
+
+toHero :: Double -> Double -> Double -> Double -> Hero
+toHero bd bas sc l = Hero { _base_damage = bd, _base_attack_speed = bas, _scaling = sc, _lvl = l}
 
 attackSpeed :: Fractional a => a -> a -> a
 attackSpeed bat asm =(1/bat)*asm
@@ -24,49 +37,42 @@ dmgReduction2 armorpts penpts =
       reduction = (100/(100 + effectiveArmor))
   in if reduction > 1 then 1 else reduction
 
-dps :: Double -> Double -> Double -> Double -> Double -> Double -> Double -> Double -> Double -> Double
-dps power_points attack_speed_points crit_points pen crit_damage base_damage base_attack_speed scaling lvl =
-  let reduction = dmgReduction2 0 pen
-      base_dmg = (base_damage+(6*power_points*scaling))
-      hits_second = ((1+(0.055*attack_speed_points))/base_attack_speed)
+dps :: Hero -> Integer -> Integer -> Integer -> Integer -> Double -> Double
+dps hero pwr as cr pn crit_damage =
+  let power_points = (fromInteger pwr)
+      attack_speed_points = (fromInteger as)
+      crit_points = (fromInteger cr)
+      pen = (fromInteger pn)
+      reduction = dmgReduction2 0 pen
+      base_dmg = ((hero^.base_damage)+(6*power_points*(hero^.scaling)))
+      hits_second = ((1+(0.055*attack_speed_points))/(hero^.base_attack_speed))
       crit_bonus = (1+((0.04*crit_points)*(crit_damage-1)))
   in base_dmg * hits_second * crit_bonus * reduction
 
-murdockDps :: Integer -> Integer -> Integer -> Integer -> Double -> Double
-murdockDps pwr speed crit pen bonus = dps (fromInteger pwr) (fromInteger speed) (fromInteger crit) (fromInteger pen) bonus 86 1.16 1 15
 
-toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink, ls) =
-  Build { _bpower = dmg
-        , _bdps = dps
-        , _bspeed = speed
-        , _bcrit = crit
-        , _bpen = pen
-        , _blifesteal = ls
-        , _bcrit_bonus = critbonus
-        , _bward = ward
-        , _bblink = blink}
+hero "murdock" = toHero 86 1.16 1 15
+hero _ = toHero 0 0 0 0
 
 rounder f n = (fromInteger $ round $ f * (10^n)) / (10.0^^n)
 
-
-calcIfUnder :: Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Build
-calcIfUnder dmg speed crit pen critbonus max ward blink ls =
+calcIfUnder :: String -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Build
+calcIfUnder hero_name dmg speed crit pen critbonus max ward blink ls =
   if (dmg + speed + crit + pen + (critbonus * 6)) == max
   then
     let bonus = if critbonus == 1 then yesBonusCrit else noBonusCrit
-        dpsNum = murdockDps dmg speed crit pen bonus
+        dpsNum = dps (hero hero_name) dmg speed crit pen bonus
     in toBuild (rounder dpsNum 0, dmg,speed,crit,pen,critbonus, ward, blink, ls)
   else toBuild (0,0,0,0,0,0,0,0, 0)
 
 -- wards, blink, and crit bonus take up extra because of the missed opportunity cost
 -- of the "completed" bonus another card would offer. Wards are 3cxp for 2pwr, so
 -- (-2 a full power card and -1 for opportunty)
-maxDps w b lifeSteal =
+maxDps w b lifeSteal hero_name =
   let totalPoints = 66 -- counts the bonus +1 of the 6 cards
       ward = if w then 1 else 0
       blink = if b then 1 else 0
       points = totalPoints - lifeSteal - (3 * ward) - (6 * blink)
-      totals = [ (calcIfUnder dmg speed crit pen critbonus points ward blink lifeSteal) |
+      totals = [ (calcIfUnder hero_name dmg speed crit pen critbonus points ward blink lifeSteal) |
                  dmg <- [0..30],
                  speed <- [0..30],
                  crit <- [0..30],
