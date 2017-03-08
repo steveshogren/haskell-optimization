@@ -5,18 +5,9 @@ import Control.Lens
 import Optimization
 import Data.List
 import Data.Ord
+import Types
 import Data.Function (on)
 
-data Hero = Hero {
-  _base_damage :: Double,
-  _base_attack_speed :: Double,
-  _scaling :: Double,
-  _lvl :: Double
-  } deriving (Show, Eq)
-makeLenses ''Hero
-
-toHero :: Double -> Double -> Double -> Double -> Hero
-toHero bd bas sc l = Hero { _base_damage = bd, _base_attack_speed = bas, _scaling = sc, _lvl = l}
 
 attackSpeed :: Fractional a => a -> a -> a
 attackSpeed bat asm =(1/bat)*asm
@@ -50,8 +41,8 @@ dps hero pwr as cr pn crit_damage =
   in base_dmg * hits_second * crit_bonus * reduction
 
 
-hero "murdock" = toHero 86 1.16 1 15
-hero _ = toHero 0 0 0 0
+hero "murdock" = toHero 86 1.16 1 15 [Fury, Intellect]
+hero _ = toHero 0 0 0 0 []
 
 rounder f n = (fromInteger $ round $ f * (10^n)) / (10.0^^n)
 

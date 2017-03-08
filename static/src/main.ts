@@ -120,7 +120,7 @@ function intent(dom) {
                 url: '/dps',
                 category: 'dps',
                 method: 'POST',
-                send: {blink: blink, ward: ward, lifesteal: ls, hero_name: hero}
+                send: {has_blink: blink, has_ward: ward, desired_lifesteal: ls, hero_name: hero}
             };
         });
 

@@ -7,18 +7,11 @@ import Data.Monoid ((<>))
 import Data.Aeson (FromJSON, ToJSON)
 import GHC.Generics
 import Web.Scotty
+import Types
 import Control.Monad.Trans
 import qualified Optimization as OP
 import qualified DamagePen as DP
 import Network.Wai.Middleware.Static (addBase, noDots, staticPolicy, (>->))
-
-data Setting = Setting { hero_name :: String
-                       , blink :: Bool
-                       , ward :: Bool
-                       , lifesteal :: Integer}
-             deriving (Show, Generic)
-instance ToJSON Setting
-instance FromJSON Setting
 
 main :: IO ()
 main = do
@@ -30,8 +23,8 @@ main = do
     middleware $ staticPolicy (noDots >-> addBase "static/dist")
 
     post "/dps" $ do
-      setting <- jsonData :: ActionM Setting
-      json $ DP.maxDps  (ward setting) (blink setting) (lifesteal setting) (hero_name setting)
+      setting <- jsonData :: ActionM UISetting
+      json $ DP.maxDps  (has_ward setting) (has_blink setting) (desired_lifesteal setting) (hero_name setting)
 
     post "/optimize" $ do
       build <- jsonData :: ActionM OP.Build

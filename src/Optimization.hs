@@ -3,6 +3,7 @@
 module Optimization (optimize
                     , Build(..)
                     , toBuild
+                    , Afinity(..)
                     , HandCard(..)
                     ) where
 
@@ -13,107 +14,31 @@ import Prelude hiding ((*), (/), (+), (-))
 import qualified Data.Map as Map
 import Data.LinearProgram as DLP
 import Data.List
+import Types
 import qualified Data.Set as Set
 
 -- Types
 
--- -- Hand Card
-data HandCard = HandCard {
-  count :: Double,
-  info :: String
-  } deriving (Show, Generic)
-
-instance ToJSON HandCard
-instance FromJSON HandCard
-
-toHandCard :: (String, Double) -> HandCard
-toHandCard (n, c) = HandCard { info = n, count = c}
-
--- -- Build
-
-data Build = Build {
-  _bdps :: Double,
-  _bpower :: Integer,
-  _bspeed :: Integer,
-  _bcrit :: Integer,
-  _bpen :: Integer,
-  _blifesteal :: Integer,
-  _bcrit_bonus :: Integer,
-  _bward :: Integer,
-  _bblink :: Integer
-  } deriving (Show, Generic)
-makeLenses ''Build
-instance ToJSON Build
-instance FromJSON Build
-
-toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink, ls) =
-  Build { _bpower = dmg
-        , _bdps = dps
-        , _bspeed = speed
-        , _bcrit = crit
-        , _bpen = pen
-        , _blifesteal = ls
-        , _bcrit_bonus = critbonus
-        , _bward = ward
-        , _bblink = blink}
-
--- -- Card
-
-data Card = Card
-    { _cost :: Integer
-    , _power :: Integer
-    , _speed :: Integer
-    , _crit :: Integer
-    , _pen :: Integer
-    , _lifesteal :: Integer
-    , _crit_bonus :: Integer
-    , _ward :: Integer
-    , _blink :: Integer
-    , _name :: String
-    , _letter :: String
-    , _firstType :: String
-    , _secondType :: String
-    }
-makeLenses ''Card
-
-toCard :: (Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, String) -> String -> Card
-toCard (cost, power, speed, crit, pen, lifesteal, crit_bonus, ward, blink, name) letter =
-  Card { _cost = cost
-       , _power = power
-       , _speed = speed
-       , _crit = crit
-       , _pen = pen
-       , _lifesteal = lifesteal
-       , _crit_bonus = crit_bonus
-       , _ward = ward
-       , _blink = blink
-       , _name = name
-       , _letter = letter
-       , _firstType = ""
-       , _secondType = ""
-       }
-
 mainCards :: [Card]
 mainCards =
   zipWith toCard
-    [(2, 2, 1, 0, 0, 0, 0, 0, 0, "madstone gem")
-    ,(2, 0, 2, 1, 0, 0, 0, 0, 0, "redeye nitro")
-    ,(3, 2, 0, 2, 0, 0, 0, 0, 0, "impact hammer")
-    ,(3, 3, 1, 0, 0, 0, 0, 0, 0, "windcarver blade")
-    ,(3, 0, 0, 1, 0, 3, 0, 0, 0, "brand ironeater")
-    ,(3, 3, 0, 0, 1, 0, 0, 0, 0, "rustbreaker")
-    ,(3, 1, 0, 3, 0, 0, 0, 0, 0, "spear rifthunter")
-    ,(3, 1, 3, 0, 0, 0, 0, 0, 0, "whirling wand")
-    ,(3, 3, 0, 1, 0, 0, 0, 0, 0, "micro-nuke")
-    ,(6, 1, 0, 0, 0, 0, 1, 0, 0, "blade of agora")
-    ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "hunger maul")
-    ,(3, 2, 0, 0, 0, 0, 0, 1, 0, "sages ward")
-    ,(5, 0, 0, 0, 0, 0, 0, 0, 1, "blink charm")
-    ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "blast harness")
+    [(2, 2, 1, 0, 0, 0, 0, 0, 0, "madstone gem", Fury)
+    ,(2, 0, 2, 1, 0, 0, 0, 0, 0, "redeye nitro", Fury)
+    ,(3, 2, 0, 2, 0, 0, 0, 0, 0, "impact hammer", Fury)
+    ,(3, 3, 1, 0, 0, 0, 0, 0, 0, "windcarver blade", Universal)
+    ,(3, 0, 0, 1, 0, 3, 0, 0, 0, "brand ironeater", Fury)
+    ,(3, 3, 0, 0, 1, 0, 0, 0, 0, "rustbreaker", Fury)
+    ,(3, 1, 0, 3, 0, 0, 0, 0, 0, "spear rifthunter", Universal)
+    ,(3, 1, 3, 0, 0, 0, 0, 0, 0, "whirling wand", Universal)
+    ,(3, 3, 0, 1, 0, 0, 0, 0, 0, "micro-nuke", Fury)
+    ,(6, 1, 0, 0, 0, 0, 1, 0, 0, "blade of agora", Universal)
+    ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "hunger maul", Fury)
+    ,(3, 2, 0, 0, 0, 0, 0, 1, 0, "sages ward", Universal)
+    ,(5, 0, 0, 0, 0, 0, 0, 0, 1, "blink charm", Universal)
+    ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "blast harness", Fury)
     ]
     (map (\a -> [a]) ['a'..])
 
-type OptTuple t = (t, String)
 
 -- Logic
 
