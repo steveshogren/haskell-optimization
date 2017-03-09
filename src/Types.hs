@@ -11,7 +11,8 @@ type OptTuple t = (t, String)
 data Afinity = Growth | Order | Fury | Intellect | Shadow | Universal
   deriving (Show, Eq)
 
--- -- Hand Card
+-- Hand Card
+
 data HandCard = HandCard {
   count :: Double,
   info :: String
@@ -23,7 +24,7 @@ instance FromJSON HandCard
 toHandCard :: (String, Double) -> HandCard
 toHandCard (n, c) = HandCard { info = n, count = c}
 
--- -- Build
+-- Build
 
 data Build = Build {
   _bdps :: Double,
@@ -40,6 +41,7 @@ makeLenses ''Build
 instance ToJSON Build
 instance FromJSON Build
 
+toBuild :: (Double, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer) -> Build
 toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink, ls) =
   Build { _bpower = dmg
         , _bdps = dps
@@ -51,7 +53,7 @@ toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink, ls) =
         , _bward = ward
         , _bblink = blink}
 
--- -- Card
+-- Card
 
 data Card = Card
     { _cost :: Integer
@@ -89,6 +91,8 @@ toCard (cost, power, speed, crit, pen, lifesteal, crit_bonus, ward, blink, name,
        , _secondType = ""
        }
 
+-- Hero
+
 data Hero = Hero {
   _base_damage :: Double,
   _base_attack_speed :: Double,
@@ -101,7 +105,7 @@ makeLenses ''Hero
 toHero :: Double -> Double -> Double -> Double -> [Afinity] -> Hero
 toHero bd bas sc l afs = Hero { _base_damage = bd, _base_attack_speed = bas, _scaling = sc, _lvl = l, _afinities = afs}
 
-  
+-- UISetting
 
 data UISetting = UISetting { hero_name :: String
                        , has_blink :: Bool

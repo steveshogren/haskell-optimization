@@ -40,8 +40,10 @@ dps hero pwr as cr pn crit_damage =
       crit_bonus = (1+((0.04*crit_points)*(crit_damage-1)))
   in base_dmg * hits_second * crit_bonus * reduction
 
-
-hero "murdock" = toHero 86 1.16 1 15 [Fury, Intellect]
+hero "murdock" = toHero   86   1.168 1    15 [Fury, Intellect]
+hero "sparrow" = toHero   64   1.392 1    15 [Growth, Intellect]
+hero "grim" = toHero      77.4 1.392 0.85 15 [Intellect, Fury]
+hero "twinblast" = toHero 68.2 1.000 0.8  15 [Growth, Fury]
 hero _ = toHero 0 0 0 0 []
 
 rounder f n = (fromInteger $ round $ f * (10^n)) / (10.0^^n)

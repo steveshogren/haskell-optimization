@@ -63,7 +63,10 @@ function view(state$ : any) {
             return div('.dps', [
                 div([
                     div([select('.hero', [option({attrs: {value: 'murdock'}}, 'Murdock'),
-                                          option({attrs: {value: 'sparrow'}}, 'Sparrow')])
+                                          option({attrs: {value: 'sparrow'}}, 'Sparrow'),
+                                          option({attrs: {value: 'twinblast'}}, 'Twinblast'),
+                                          option({attrs: {value: 'grim'}}, 'Grim.EXE'),
+                                         ])
                          , 'Hero?']),
                     div([input('.ward', {attrs: {type: 'checkbox'}}), 'Ward?']),
                     div([input('.blink', {attrs: {type: 'checkbox'}}), 'Blink?']),
