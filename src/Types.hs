@@ -95,15 +95,16 @@ toCard (cost, power, speed, crit, pen, lifesteal, crit_bonus, ward, blink, name,
 
 data Hero = Hero {
   _base_damage :: Double,
-  _base_attack_speed :: Double,
+  _attack_speed :: Double,
+  _base_attack_time :: Double,
   _scaling :: Double,
   _lvl :: Double,
   _afinities :: [Afinity]
   } deriving (Show, Eq)
 makeLenses ''Hero
 
-toHero :: Double -> Double -> Double -> Double -> [Afinity] -> Hero
-toHero bd bas sc l afs = Hero { _base_damage = bd, _base_attack_speed = bas, _scaling = sc, _lvl = l, _afinities = afs}
+toHero :: Double -> Double -> Double -> Double -> Double -> [Afinity] -> Hero
+toHero bd att bas sc l afs = Hero { _base_damage = bd, _attack_speed = bas, _scaling = sc, _lvl = l, _afinities = afs, _base_attack_time = att}
 
 -- UISetting
 
