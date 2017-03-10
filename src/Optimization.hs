@@ -7,8 +7,6 @@ module Optimization (optimize
                     , HandCard(..)
                     ) where
 
-import GHC.Generics
-import Data.Aeson (FromJSON, ToJSON)
 import Control.Lens
 import Prelude hiding ((*), (/), (+), (-))
 import qualified Data.Map as Map
@@ -19,26 +17,28 @@ import qualified Data.Set as Set
 
 -- Types
 
-mainCards :: [Card]
-mainCards =
-  zipWith toCard
-    [(2, 2, 1, 0, 0, 0, 0, 0, 0, "madstone gem", Fury)
-    ,(2, 0, 2, 1, 0, 0, 0, 0, 0, "redeye nitro", Fury)
-    ,(3, 2, 0, 2, 0, 0, 0, 0, 0, "impact hammer", Fury)
-    ,(3, 3, 1, 0, 0, 0, 0, 0, 0, "windcarver blade", Universal)
-    ,(3, 0, 0, 1, 0, 3, 0, 0, 0, "brand ironeater", Fury)
-    ,(3, 3, 0, 0, 1, 0, 0, 0, 0, "rustbreaker", Fury)
-    ,(3, 1, 0, 3, 0, 0, 0, 0, 0, "spear rifthunter", Universal)
-    ,(3, 1, 3, 0, 0, 0, 0, 0, 0, "whirling wand", Universal)
-    ,(3, 3, 0, 1, 0, 0, 0, 0, 0, "micro-nuke", Fury)
-    ,(6, 1, 0, 0, 0, 0, 1, 0, 0, "blade of agora", Universal)
-    ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "hunger maul", Fury)
-    ,(3, 2, 0, 0, 0, 0, 0, 1, 0, "sages ward", Universal)
-    ,(5, 0, 0, 0, 0, 0, 0, 0, 1, "blink charm", Universal)
-    ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "blast harness", Fury)
-    ]
-    (map (\a -> [a]) ['a'..])
-
+mainCards :: Hero -> [Card]
+mainCards hero =
+  let hero_afinities = (hero^.afinities)
+      allCards = zipWith toCard
+                 [(2, 2, 1, 0, 0, 0, 0, 0, 0, "madstone gem", Fury)
+                 ,(2, 0, 2, 1, 0, 0, 0, 0, 0, "redeye nitro", Fury)
+                 ,(3, 2, 0, 2, 0, 0, 0, 0, 0, "impact hammer", Fury)
+                 ,(3, 3, 1, 0, 0, 0, 0, 0, 0, "windcarver blade", Universal)
+                 ,(3, 0, 0, 1, 0, 3, 0, 0, 0, "brand ironeater", Fury)
+                 ,(3, 3, 0, 0, 1, 0, 0, 0, 0, "rustbreaker", Fury)
+                 ,(3, 1, 0, 3, 0, 0, 0, 0, 0, "spear rifthunter", Universal)
+                 ,(3, 1, 3, 0, 0, 0, 0, 0, 0, "whirling wand", Universal)
+                 ,(3, 3, 0, 1, 0, 0, 0, 0, 0, "micro-nuke", Fury)
+                 ,(6, 1, 0, 0, 0, 0, 1, 0, 0, "blade of agora", Universal)
+                 ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "hunger maul", Fury)
+                 ,(3, 2, 0, 0, 0, 0, 0, 1, 0, "sages ward", Universal)
+                 ,(5, 0, 0, 0, 0, 0, 0, 0, 1, "blink charm", Universal)
+                 ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "blast harness", Fury)
+                 ]
+                 (map (\a -> [a]) ['a'..])
+  in (filter (\card -> (Universal == card^.afinity)
+               || (elem (card^.afinity) hero_afinities)) allCards)
 
 -- Logic
 
@@ -69,9 +69,9 @@ convertCardsToOptTuples :: (Card -> t) -> [Card] -> [OptTuple t]
 convertCardsToOptTuples fn permutations =
   map (\next -> (fn next, (_name next))) permutations
 
-collectAllPermutations :: (Card -> t) -> [OptTuple t]
-collectAllPermutations fn =
-  foldl (\ret card -> ret ++ (convertCardsToOptTuples fn (cardPermutations card))) [] mainCards
+collectAllPermutations :: Hero -> (Card -> t) -> [OptTuple t]
+collectAllPermutations hero fn =
+  foldl (\ret card -> ret ++ (convertCardsToOptTuples fn (cardPermutations card))) [] $ mainCards hero
 
 type CardSetter = ASetter Card Card Integer Integer
 
@@ -143,24 +143,24 @@ totalCXP = 60
 totalCards :: Integer
 totalCards = 6
 
-lpCards :: Build -> LP String Integer
-lpCards build = execLPM $ do
-  equalTo (linCombination (collectAllPermutations _cost)) totalCXP
-  geqTo (linCombination (collectAllPermutations _power)) (build^.bpower)
-  geqTo (linCombination (collectAllPermutations _speed)) (build^.bspeed)
-  geqTo (linCombination (collectAllPermutations _crit)) (build^.bcrit)
-  geqTo (linCombination (collectAllPermutations _pen)) (build^.bpen)
-  geqTo (linCombination (collectAllPermutations _lifesteal)) (build^.blifesteal)
-  geqTo (linCombination (collectAllPermutations _crit_bonus)) (build^.bcrit_bonus)
-  geqTo (linCombination (collectAllPermutations _ward)) (build^.bward)
-  geqTo (linCombination (collectAllPermutations _blink)) (build^.bblink)
-  equalTo (linCombination (map (\(_,n) -> (1, n)) $ collectAllPermutations _power)) totalCards
-  mapM (\(_,n) -> setVarKind n IntVar) $ collectAllPermutations _power
-  mapM (\(_,n) -> varBds n 0 1) $ collectAllPermutations _power
+lpCards :: Hero -> Build -> LP String Integer
+lpCards hero build = execLPM $ do
+  equalTo (linCombination (collectAllPermutations hero _cost)) totalCXP
+  geqTo (linCombination   (collectAllPermutations hero _power)) (build^.bpower)
+  geqTo (linCombination   (collectAllPermutations hero _speed)) (build^.bspeed)
+  geqTo (linCombination   (collectAllPermutations hero _crit)) (build^.bcrit)
+  geqTo (linCombination   (collectAllPermutations hero _pen)) (build^.bpen)
+  geqTo (linCombination   (collectAllPermutations hero _lifesteal)) (build^.blifesteal)
+  geqTo (linCombination   (collectAllPermutations hero _crit_bonus)) (build^.bcrit_bonus)
+  geqTo (linCombination   (collectAllPermutations hero _ward)) (build^.bward)
+  geqTo (linCombination   (collectAllPermutations hero _blink)) (build^.bblink)
+  equalTo (linCombination (map (\(_,n) -> (1, n)) $ collectAllPermutations hero _power)) totalCards
+  mapM (\(_,n) -> setVarKind n IntVar) $ collectAllPermutations hero _power
+  mapM (\(_,n) -> varBds n 0 1) $ collectAllPermutations hero _power
 
-optimize :: Build -> IO [HandCard]
-optimize b = do
-  x <- glpSolveVars mipDefaults (lpCards b)
+optimize :: Hero -> Build -> IO [HandCard]
+optimize hero b = do
+  x <- glpSolveVars mipDefaults (lpCards hero b)
   case x of (Success, Just (obj, vars)) ->
               let cards = (map toHandCard) $ filter (\(name, count) -> count > 0) $ Map.toList vars
               in if null cards then
