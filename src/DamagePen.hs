@@ -40,11 +40,6 @@ dps hero pwr as cr pn crit_damage = do
       crit_bonus = (1+((0.04*crit_points)*(crit_damage-1)))
   base_dmg * hits_second * crit_bonus  * reduction
 
-hero "murdock" = toHero   86   1.35 116.8 1    15 [Fury, Intellect]
-hero "sparrow" = toHero   64   1.2  139.2 1    15 [Growth, Intellect]
-hero "grim" = toHero      77.4 1.2  139.2 0.85 15 [Intellect, Fury]
-hero "twinblast" = toHero 68.2 1.0  100.0 0.8  15 [Growth, Fury]
-hero _ = toHero 0 0 0 0 0 []
 
 rounder f n = (fromInteger $ round $ f * (10^n)) / (10.0^^n)
 
@@ -53,9 +48,9 @@ calcIfUnder hero_name dmg speed crit pen critbonus max ward blink ls =
   if (dmg + speed + crit + pen + (critbonus * 6)) == max
   then
     let bonus = if critbonus == 1 then yesBonusCrit else noBonusCrit
-        dpsNum = dps (hero hero_name) dmg speed crit pen bonus
-    in toBuild (rounder dpsNum 0, dmg,speed,crit,pen,critbonus, ward, blink, ls)
-  else toBuild (0,0,0,0,0,0,0,0, 0)
+        dpsNum = dps (heroFromName hero_name) dmg speed crit pen bonus
+    in toBuild (rounder dpsNum 0, dmg,speed,crit,pen,critbonus, ward, blink, ls, hero_name)
+  else toBuild (0,0,0,0,0,0,0,0,0,hero_name)
 
 -- wards, blink, and crit bonus take up extra because of the missed opportunity cost
 -- of the "completed" bonus another card would offer. Wards are 3cxp for 2pwr, so

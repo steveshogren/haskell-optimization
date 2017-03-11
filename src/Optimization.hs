@@ -143,8 +143,9 @@ totalCXP = 60
 totalCards :: Integer
 totalCards = 6
 
-lpCards :: Hero -> Build -> LP String Integer
-lpCards hero build = execLPM $ do
+lpCards :: Build -> LP String Integer
+lpCards build = execLPM $ do
+  let hero = heroFromName $ build^.bhero
   equalTo (linCombination (collectAllPermutations hero _cost)) totalCXP
   geqTo (linCombination   (collectAllPermutations hero _power)) (build^.bpower)
   geqTo (linCombination   (collectAllPermutations hero _speed)) (build^.bspeed)
@@ -158,9 +159,9 @@ lpCards hero build = execLPM $ do
   mapM (\(_,n) -> setVarKind n IntVar) $ collectAllPermutations hero _power
   mapM (\(_,n) -> varBds n 0 1) $ collectAllPermutations hero _power
 
-optimize :: Hero -> Build -> IO [HandCard]
-optimize hero b = do
-  x <- glpSolveVars mipDefaults (lpCards hero b)
+optimize :: Build -> IO [HandCard]
+optimize b = do
+  x <- glpSolveVars mipDefaults (lpCards b)
   case x of (Success, Just (obj, vars)) ->
               let cards = (map toHandCard) $ filter (\(name, count) -> count > 0) $ Map.toList vars
               in if null cards then

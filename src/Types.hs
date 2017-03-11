@@ -24,6 +24,7 @@ instance FromJSON HandCard
 toHandCard :: (String, Double) -> HandCard
 toHandCard (n, c) = HandCard { info = n, count = c}
 
+
 -- Build
 
 data Build = Build {
@@ -35,14 +36,15 @@ data Build = Build {
   _blifesteal :: Integer,
   _bcrit_bonus :: Integer,
   _bward :: Integer,
-  _bblink :: Integer
+  _bblink :: Integer,
+  _bhero :: String
   } deriving (Show, Generic)
 makeLenses ''Build
 instance ToJSON Build
 instance FromJSON Build
 
-toBuild :: (Double, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer) -> Build
-toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink, ls) =
+toBuild :: (Double, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, String) -> Build
+toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink, ls, hero) =
   Build { _bpower = dmg
         , _bdps = dps
         , _bspeed = speed
@@ -51,6 +53,7 @@ toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink, ls) =
         , _blifesteal = ls
         , _bcrit_bonus = critbonus
         , _bward = ward
+        , _bhero = hero
         , _bblink = blink}
 
 -- Card
@@ -105,6 +108,14 @@ makeLenses ''Hero
 
 toHero :: Double -> Double -> Double -> Double -> Double -> [Afinity] -> Hero
 toHero bd att bas sc l afs = Hero { _base_damage = bd, _attack_speed = bas, _scaling = sc, _lvl = l, _afinities = afs, _base_attack_time = att}
+
+-- Hero
+
+heroFromName "murdock" = toHero   86   1.35 116.8 1    15 [Fury, Intellect]
+heroFromName "sparrow" = toHero   64   1.2  139.2 1    15 [Growth, Intellect]
+heroFromName "grim" = toHero      77.4 1.2  139.2 0.85 15 [Intellect, Fury]
+heroFromName "twinblast" = toHero 68.2 1.0  100.0 0.8  15 [Growth, Fury]
+heroFromName _ = toHero 0 0 0 0 0 []
 
 -- UISetting
 
