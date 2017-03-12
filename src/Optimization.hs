@@ -20,21 +20,32 @@ import qualified Data.Set as Set
 mainCards :: Hero -> [Card]
 mainCards hero =
   let hero_afinities = (hero^.afinities)
+
+     -- (cost, power, speed, crit, pen, lifesteal, crit_bonus, ward, blink, name, afinity)
       allCards = zipWith toCard
                  [(2, 2, 1, 0, 0, 0, 0, 0, 0, "madstone gem", Fury)
                  ,(2, 0, 2, 1, 0, 0, 0, 0, 0, "redeye nitro", Fury)
                  ,(3, 2, 0, 2, 0, 0, 0, 0, 0, "impact hammer", Fury)
-                 ,(3, 3, 1, 0, 0, 0, 0, 0, 0, "windcarver blade", Universal)
                  ,(3, 0, 0, 1, 0, 3, 0, 0, 0, "brand ironeater", Fury)
                  ,(3, 3, 0, 0, 1, 0, 0, 0, 0, "rustbreaker", Fury)
+                 ,(3, 3, 0, 1, 0, 0, 0, 0, 0, "micro-nuke", Fury)
+                 ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "hunger maul", Fury)
+                 ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "blast harness", Fury)
+
+                 ,(3, 3, 1, 0, 0, 0, 0, 0, 0, "windcarver blade", Universal)
+                 ,(3, 3, 0, 1, 0, 0, 0, 0, 0, "riftmagus scepter", Universal)
                  ,(3, 1, 0, 3, 0, 0, 0, 0, 0, "spear rifthunter", Universal)
                  ,(3, 1, 3, 0, 0, 0, 0, 0, 0, "whirling wand", Universal)
-                 ,(3, 3, 0, 1, 0, 0, 0, 0, 0, "micro-nuke", Fury)
                  ,(6, 1, 0, 0, 0, 0, 1, 0, 0, "blade of agora", Universal)
-                 ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "hunger maul", Fury)
                  ,(3, 2, 0, 0, 0, 0, 0, 1, 0, "sages ward", Universal)
                  ,(5, 0, 0, 0, 0, 0, 0, 0, 1, "blink charm", Universal)
-                 ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "blast harness", Fury)
+--                 ,(10, 0, 0, 0, 8, 0, 0, 0, 0, "fist of kings", Universal)
+
+                 ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "sword of the altar", Order)
+
+                 ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "feral stone", Growth)
+
+                 ,(3, 2, 0, 0, 1, 0, 0, 0, 0, "fracturing spike", Intellect)
                  ]
                  (map (\a -> [a]) ['a'..])
   in (filter (\card -> (Universal == card^.afinity)
@@ -167,4 +178,5 @@ optimize b = do
               in if null cards then
                    return [toHandCard("Combination impossible", 0)]
                  else return cards
-            (failure, result) -> return []
+            (failure, result) ->
+                   return [toHandCard("Solver failed", 0)]
