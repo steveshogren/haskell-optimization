@@ -1,8 +1,7 @@
 {-# LANGUAGE TemplateHaskell #-}
-module DamagePen (maxDps) where
+module DamagePen (maxDps, lowerMaxDps) where
 
 import Control.Lens
-import Optimization
 import Data.List
 import Data.Ord
 import Types
@@ -55,16 +54,25 @@ calcIfUnder hero_name dmg speed crit pen critbonus max ward blink ls =
 -- wards, blink, and crit bonus take up extra because of the missed opportunity cost
 -- of the "completed" bonus another card would offer. Wards are 3cxp for 2pwr, so
 -- (-2 a full power card and -1 for opportunty)
-maxDps w b lifeSteal hero_name =
+maxDps w b lifeSteal hero_name reduce_by =
   let totalPoints = 66 -- counts the bonus +1 of the 6 cards
       ward = if w then 1 else 0
       blink = if b then 1 else 0
-      points = totalPoints - lifeSteal - (3 * ward) - (6 * blink)
+      maxPen = 30 --if hero_name == "sparrow" then 0 else 30
+      points = totalPoints - lifeSteal - (3 * ward) - (6 * blink) - reduce_by
       totals = [ (calcIfUnder hero_name dmg speed crit pen critbonus points ward blink lifeSteal) |
                  dmg <- [0..30],
                  speed <- [0..30],
                  crit <- [0..30],
-                 pen <- [0..30],
+                 pen <- [0..maxPen],
                  critbonus <- [0..1]]
       builds = take 3 $ sortBy (flip compare `on` _bdps) totals
   in builds
+
+lowerMaxDps build =
+  let totalPoints = 66
+      ward = if build^.bward == 1 then True else False
+      blink = if build^.bblink == 1 then True else False
+      lifeSteal = build^.blifesteal
+      hero_name = build^.bhero
+  in head $ maxDps ward blink lifeSteal hero_name 1

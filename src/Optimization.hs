@@ -12,6 +12,7 @@ import Prelude hiding ((*), (/), (+), (-))
 import qualified Data.Map as Map
 import Data.LinearProgram as DLP
 import Data.List
+import qualified DamagePen as DP
 import Types
 import qualified Data.Set as Set
 
@@ -44,8 +45,12 @@ mainCards hero =
                  ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "sword of the altar", Order)
 
                  ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "feral stone", Growth)
+                 ,(3, 0, 0, 0, 0, 1, 0, 0, 0, "oasis siphon", Growth)
 
                  ,(3, 2, 0, 0, 1, 0, 0, 0, 0, "fracturing spike", Intellect)
+                 ,(3, 0, 0, 0, 0, 3, 0, 0, 0, "focussed drain", Intellect)
+                 ,(3, 0, 0, 0, 0, 3, 0, 0, 0, "siphon shard", Intellect)
+                 ,(3, 0, 0, 0, 0, 1, 0, 0, 0, "vital tap", Intellect)
                  ]
                  (map (\a -> [a]) ['a'..])
   in (filter (\card -> (Universal == card^.afinity)
@@ -176,7 +181,15 @@ optimize b = do
   case x of (Success, Just (obj, vars)) ->
               let cards = (map toHandCard) $ filter (\(name, count) -> count > 0) $ Map.toList vars
               in if null cards then
-                   return [toHandCard("Combination impossible", 0)]
+                   --return [toHandCard("Combination impossible", 0)]
+                   let b = DP.lowerMaxDps b
+                   in
+                     putStrLn ("dps attempt:" ++ (show $ b^.bdps))
+                     >> optimize b
                  else return cards
             (failure, result) ->
-                   return [toHandCard("Solver failed", 0)]
+                   let b = DP.lowerMaxDps b
+                   in
+                     putStrLn ("dps attempt:" ++ (show $ b^.bdps))
+                     >> optimize b
+                   --return [toHandCard("Solver failed", 0)]
