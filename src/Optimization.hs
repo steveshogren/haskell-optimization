@@ -163,33 +163,27 @@ lpCards :: Build -> LP String Integer
 lpCards build = execLPM $ do
   let hero = heroFromName $ build^.bhero
   equalTo (linCombination (collectAllPermutations hero _cost)) totalCXP
-  geqTo (linCombination   (collectAllPermutations hero _power)) (build^.bpower)
-  geqTo (linCombination   (collectAllPermutations hero _speed)) (build^.bspeed)
-  geqTo (linCombination   (collectAllPermutations hero _crit)) (build^.bcrit)
-  geqTo (linCombination   (collectAllPermutations hero _pen)) (build^.bpen)
-  geqTo (linCombination   (collectAllPermutations hero _lifesteal)) (build^.blifesteal)
-  geqTo (linCombination   (collectAllPermutations hero _crit_bonus)) (build^.bcrit_bonus)
-  geqTo (linCombination   (collectAllPermutations hero _ward)) (build^.bward)
-  geqTo (linCombination   (collectAllPermutations hero _blink)) (build^.bblink)
+  geqTo (linCombination (collectAllPermutations hero _power)) (build^.bpower)
+  geqTo (linCombination (collectAllPermutations hero _speed)) (build^.bspeed)
+  geqTo (linCombination (collectAllPermutations hero _crit)) (build^.bcrit)
+  geqTo (linCombination (collectAllPermutations hero _pen)) (build^.bpen)
+  geqTo (linCombination (collectAllPermutations hero _lifesteal)) (build^.blifesteal)
+  geqTo (linCombination (collectAllPermutations hero _crit_bonus)) (build^.bcrit_bonus)
+  geqTo (linCombination (collectAllPermutations hero _ward)) (build^.bward)
+  geqTo (linCombination (collectAllPermutations hero _blink)) (build^.bblink)
   equalTo (linCombination (map (\(_,n) -> (1, n)) $ collectAllPermutations hero _power)) totalCards
   mapM (\(_,n) -> setVarKind n IntVar) $ collectAllPermutations hero _power
   mapM (\(_,n) -> varBds n 0 1) $ collectAllPermutations hero _power
+
+
+solverFailed :: IO [HandCard]
+solverFailed = return [toHandCard("Combination impossible", 0)]
 
 optimize :: Build -> IO [HandCard]
 optimize b = do
   x <- glpSolveVars mipDefaults (lpCards b)
   case x of (Success, Just (obj, vars)) ->
               let cards = (map toHandCard) $ filter (\(name, count) -> count > 0) $ Map.toList vars
-              in if null cards then
-                   --return [toHandCard("Combination impossible", 0)]
-                   let b = DP.lowerMaxDps b
-                   in
-                     putStrLn ("dps attempt:" ++ (show $ b^.bdps))
-                     >> optimize b
+              in if null cards then solverFailed
                  else return cards
-            (failure, result) ->
-                   let b = DP.lowerMaxDps b
-                   in
-                     putStrLn ("dps attempt:" ++ (show $ b^.bdps))
-                     >> optimize b
-                   --return [toHandCard("Solver failed", 0)]
+            (failure, result) -> solverFailed

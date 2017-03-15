@@ -58,7 +58,7 @@ maxDps w b lifeSteal hero_name reduce_by =
   let totalPoints = 66 -- counts the bonus +1 of the 6 cards
       ward = if w then 1 else 0
       blink = if b then 1 else 0
-      maxPen = 30 --if hero_name == "sparrow" then 0 else 30
+      maxPen = if hero_name == "sparrow" then 0 else 30
       points = totalPoints - lifeSteal - (3 * ward) - (6 * blink) - reduce_by
       totals = [ (calcIfUnder hero_name dmg speed crit pen critbonus points ward blink lifeSteal) |
                  dmg <- [0..30],
