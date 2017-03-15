@@ -26,12 +26,14 @@ mainCards hero =
       allCards = zipWith toCard
                  [(2, 2, 1, 0, 0, 0, 0, 0, 0, "madstone gem", Fury)
                  ,(2, 0, 2, 1, 0, 0, 0, 0, 0, "redeye nitro", Fury)
+                 ,(2, 1, 2, 0, 0, 0, 0, 0, 0, "flashfire piston", Fury)
                  ,(3, 2, 0, 2, 0, 0, 0, 0, 0, "impact hammer", Fury)
                  ,(3, 0, 0, 1, 0, 3, 0, 0, 0, "brand ironeater", Fury)
                  ,(3, 3, 0, 0, 1, 0, 0, 0, 0, "rustbreaker", Fury)
                  ,(3, 3, 0, 1, 0, 0, 0, 0, 0, "micro-nuke", Fury)
                  ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "hunger maul", Fury)
                  ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "blast harness", Fury)
+                 ,(5, 1, 0, 0, 0, 0, 0, 0, 1, "blinkshot", Universal)
 
                  ,(3, 3, 1, 0, 0, 0, 0, 0, 0, "windcarver blade", Universal)
                  ,(3, 3, 0, 1, 0, 0, 0, 0, 0, "riftmagus scepter", Universal)
@@ -40,9 +42,13 @@ mainCards hero =
                  ,(6, 1, 0, 0, 0, 0, 1, 0, 0, "blade of agora", Universal)
                  ,(3, 2, 0, 0, 0, 0, 0, 1, 0, "sages ward", Universal)
                  ,(5, 0, 0, 0, 0, 0, 0, 0, 1, "blink charm", Universal)
---                 ,(10, 0, 0, 0, 8, 0, 0, 0, 0, "fist of kings", Universal)
 
                  ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "sword of the altar", Order)
+
+                 ,(6, 0, 0, 0, 2, 0, 1, 0, 0, "deathnail", Corruption)
+                 ,(7, 0, 0, 0, 0, 2, 1, 0, 0, "blackblood virus", Corruption)
+                 ,(3, 0, 0, 3, 1, 0, 0, 0, 0, "viper bolt", Corruption)
+                 ,(3, 3, 0, 0, 1, 0, 0, 0, 0, "voidsteel daggar", Corruption)
 
                  ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "feral stone", Growth)
                  ,(3, 0, 0, 0, 0, 1, 0, 0, 0, "oasis siphon", Growth)

@@ -8,7 +8,7 @@ import Control.Lens
 
 type OptTuple t = (t, String)
 
-data Afinity = Growth | Order | Fury | Intellect | Shadow | Universal
+data Afinity = Growth | Order | Fury | Intellect | Corruption | Universal
   deriving (Show, Eq)
 
 -- Hand Card
@@ -113,16 +113,16 @@ toHero bd att bas sc l afs = Hero { _base_damage = bd, _attack_speed = bas, _sca
 
 heroFromName "murdock" = toHero   86   1.35 116.8 1    15 [Fury, Intellect]
 heroFromName "sparrow" = toHero   64   1.2  139.2 1    15 [Growth, Intellect]
-heroFromName "grim" = toHero      77.4 1.2  139.2 0.85 15 [Intellect, Fury]
+heroFromName "grim" = toHero      77.4 1.2  139.2 0.85 15 [Fury, Corruption]
 heroFromName "twinblast" = toHero 68.2 1.0  100.0 0.8  15 [Growth, Fury]
 heroFromName _ = toHero 0 0 0 0 0 []
 
 -- UISetting
 
 data UISetting = UISetting { hero_name :: String
-                       , has_blink :: Bool
-                       , has_ward :: Bool
-                       , desired_lifesteal :: Integer}
+                           , has_blink :: Bool
+                           , has_ward :: Bool
+                           , desired_lifesteal :: Integer}
              deriving (Show, Generic)
 instance ToJSON UISetting
 instance FromJSON UISetting
