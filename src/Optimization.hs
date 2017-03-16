@@ -45,7 +45,7 @@ mainCards hero =
 
                  ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "sword of the altar", Order)
 
-                 ,(6, 0, 0, 0, 2, 0, 1, 0, 0, "deathnail", Corruption)
+                 ,(6, 0, 0, 0, 1, 0, 1, 0, 0, "deathnail", Corruption)
                  ,(7, 0, 0, 0, 0, 2, 1, 0, 0, "blackblood virus", Corruption)
                  ,(3, 0, 0, 3, 1, 0, 0, 0, 0, "viper bolt", Corruption)
                  ,(3, 3, 0, 0, 1, 0, 0, 0, 0, "voidsteel daggar", Corruption)
@@ -115,6 +115,9 @@ cardFields False False False True True card a b = updateFields pen a lifesteal b
 cardFields False False False False True card a b = updateFields lifesteal a lifesteal b "lifesteal" "lifesteal" card
 cardFields True False False False False card a b = updateFields power a power b "power" "power" card
 cardFields False True False False False card a b = updateFields speed a speed b "speed" "speed" card
+cardFields False False True False False card a b = updateFields speed a speed b "crit" "crit" card
+cardFields False False False True False card a b = updateFields speed a speed b "pen" "pen" card
+cardFields False False False False True card a b = updateFields speed a speed b "lifesteal" "lifesteal" card
 cardFields False False False False False card a b = card
 
 formatCardName :: Bool -> Card -> Integer -> Integer -> Integer -> String
