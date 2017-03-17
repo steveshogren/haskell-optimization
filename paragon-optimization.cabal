@@ -19,10 +19,34 @@ executable paragon-optimization
   default-language:    Haskell2010
   build-depends:       aeson >= 1.0.2.1
                      , base >= 4.7 && < 5
-                     , wai-extra >=3.0.0
-                     , wai-middleware-static
                      , containers >= 0.5.6.2
-                     , mtl >= 2.2.1
                      , glpk-hs
                      , lens >= 4.12.3
+                     , mtl >= 2.2.1
                      , scotty
+                     , tasty >= 0.11.2
+                     , tasty-hunit >= 0.9.2
+                     , wai-extra >=3.0.0
+                     , wai-middleware-static
+
+test-suite paragon-optimization-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      src, test
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  other-modules:       CardsTest, Cards
+  default-language:    Haskell2010
+  main-is:             MainTest.hs
+  build-depends:       HUnit >= 1.2.5.2
+                     , aeson >= 1.0.2.1
+                     , base >= 4.7 && < 5
+                     , containers >= 0.5.6.2
+                     , glpk-hs
+                     , lens >= 4.12.3
+                     , mtl >= 2.2.1
+                     , scotty
+                     , tasty
+                     , tasty >= 0.11.2
+                     , tasty-hunit
+                     , tasty-hunit >= 0.9.2
+                     , wai-extra >=3.0.0
+                     , wai-middleware-static

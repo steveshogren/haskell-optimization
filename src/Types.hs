@@ -73,8 +73,39 @@ data Card = Card
     , _firstType :: String
     , _secondType :: String
     , _afinity :: Afinity
+    , _mana :: Integer
+    , _manaRegen :: Integer
+    , _health :: Integer
+    , _healthRegen :: Integer
+    , _basicArmor :: Integer
+    , _abilityArmor :: Integer
+    , _abilityPen :: Integer
     }
 makeLenses ''Card
+
+defaultCard =
+  Card { _cost = 0
+       , _power = 0
+       , _speed = 0
+       , _crit = 0
+       , _pen = 0
+       , _lifesteal = 0
+       , _crit_bonus = 0
+       , _ward = 0
+       , _blink = 0
+       , _name = ""
+       , _letter = ""
+       , _afinity = Universal
+       , _firstType = ""
+       , _secondType = ""
+       , _mana  = 0
+       , _manaRegen  = 0
+       , _health  = 0
+       , _healthRegen  = 0
+       , _basicArmor  = 0
+       , _abilityArmor  = 0
+       , _abilityPen  = 0
+       }
 
 toCard :: (Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, String, Afinity) -> String -> Card
 toCard (cost, power, speed, crit, pen, lifesteal, crit_bonus, ward, blink, name, afinity) letter =
@@ -92,6 +123,13 @@ toCard (cost, power, speed, crit, pen, lifesteal, crit_bonus, ward, blink, name,
        , _afinity = afinity
        , _firstType = ""
        , _secondType = ""
+       , _mana  = 0
+       , _manaRegen  = 0
+       , _health  = 0
+       , _healthRegen  = 0
+       , _basicArmor  = 0
+       , _abilityArmor  = 0
+       , _abilityPen  = 0
        }
 
 -- Hero

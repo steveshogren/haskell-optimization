@@ -1,205 +1,205 @@
-Barrier Token, Cost: 1, Universal, 4 Ability armor
-Bump Juice, Cost: 1, Fury, Active:Restore 50 Health.
-Cast Token, Cost: 1, Universal, 6 Power
-Chrono-Tonic, Cost: 1, Intellect, Active:For 15 seconds +3.6 Health regeneration and +10% Cooldown reduction.
-Fiend Elixir, Cost: 1, Corruption, Active:For 15 seconds +2.28 Mana regeneration, and upon receiving damage restore 12 Mana.
-Guard Token, Cost: 1, Universal, 7 Basic armor
-Health Potion, Cost: 1, Universal, Active:For 15 seconds restore 90 Health.
-Health Token, Cost: 1, Universal, 50 Health
-Hunter's Drink, Cost: 1, Growth, Active:For 15 seconds +3.6 Health regeneration and aditiondal 0,6xPlayer level.
-Jungle Drink, Cost: 1, Growth, Active:For 15 seconds +6 damage and +3.6 Health regeneration.
-Mana Potion, Cost: 1, Universal, Active:For 15 seconds restore 57 Mana.
-Mender's Phial, Cost: 1, Order, Active:For 15 seconds +4.37 Health regeneration and for 7 seconds +3.8 Mana regeneration to nearby allies.
-Scout's Ward, Cost: 1, Universal, Unique Active:Place a Ward to reveal the surrounding area for 1.5 minutes.
-Shaman's Drink, Cost: 1, Growth, Active:For 15 seconds +2.28 Mana regeneration and aditiondal 0,3xPlayer level. 
-Shepard's Phial, Cost: 1, Order, Active:For 15 seconds +2.85 Mana regeneration and for 7 seconds +6 Health regeneration to nearby allies.
-Strike Token, Cost: 1, Universal, 6 Power
-Vampiric Elixir, Cost: 1, Corruption, Active:For 15 seconds gain +5% Lifesteal and +3.6 Health regeneration.
-Zap Juice, Cost: 1, Fury, Active:Restore 35 Mana.
-Flashfire Piston, Cost: 2, Fury, 11 Attack Speed
-Hatespitter, Cost: 2, Fury, 2 Ability penetration0.3 Mana Regen
-Healer Token, Cost: 2, Universal, 2.8 Health Regen
-Madstone Gem, Cost: 2, Fury, 12 Power
-Rageheart Engine, Cost: 2, Fury, 4 Basic penetration0.3 Mana Regen
-Redeye Nitro, Cost: 2, Fury, 5.5 Attack Speed4% Crit Chance
-Adamant Edge, Cost: 3, Universal, 6 Power50 Health
-Amp Crystal, Cost: 3, Intellect, 6 Power30 Mana
-Amulet of the Veteran, Cost: 3, Universal, 100 Health
-Armavore, Cost: 3, Fury, 2 Ability penetration
-Assassin's Ward, Cost: 3, Corruption, 6 Power4 Basic penetration2.5% Lifesteal
-Backstabber, Cost: 3, Corruption, 4% Crit Chance
-Beastmaster's Scythe, Cost: 3, Universal, 50 Health5.5 Attack Speed
-Berzerker Drive, Cost: 3, Fury, 6 Power0.3 Mana Regen5.5 Attack Speed
-Bloodsoaked Armor, Cost: 3, Corruption, 7 Basic armor5.5 Attack Speed
-Bone Dice, Cost: 3, Fury, 4% Crit Chance
-Brand of the Ironeater, Cost: 3, Fury, 4% Crit Chance5% Lifesteal
-Brawler's Scythe, Cost: 3, Universal, 6 Power30 Mana
-Brawler's Ward, Cost: 3, Universal, 6 Power30 Mana
-Brightsteel Plate, Cost: 3, Order, 7 Basic armor8% Crit Chance
-Burnblood Powder, Cost: 3, Fury, 6 Power0.3 Mana Regen5.5 Attack Speed
-Burst-Engine, Cost: 3, Intellect, 6 Power0.3 Mana Regen
-Celestine Diamond, Cost: 3, Order, 6 Power0.3 Mana Regen30 Mana
-Circlet of Health, Cost: 3, Universal, 30 Mana
-Circlet of Mana, Cost: 3, Universal, 50 Health
-Combustion, Cost: 3, Fury, 0.3 Mana Regen
-Crystal Conduit, Cost: 3, Intellect, 2 Ability penetration30 Mana
-Eldermage Amulet, Cost: 3, Universal, 6 Power50 Health
-Elysian Diamond, Cost: 3, Order, 6 Power0.3 Mana Regen50 Health
-Executioner's Scythe, Cost: 3, Corruption, 6 Power4% Crit Chance
-Fountain Spike, Cost: 3, Universal, 6 Power30 Mana
-Fracturing Spike, Cost: 3, Intellect, 4 Basic penetration0.3 Mana Regen
-Genesis Torch, Cost: 3, Order, 4 Basic penetration4 Ability armor0.3 Mana Regen
-Gift of the Rains, Cost: 3, Growth, 0.3 Mana Regen1.4 Health Regen
-Golden Veil, Cost: 3, Order, 4 Ability armor8% Crit Chance
-Guardian's Scythe, Cost: 3, Universal, 6 Power50 Health
-Guardian's Ward, Cost: 3, Universal, 6 Power50 Health
-Hemorrhage, Cost: 3, Fury, 0.3 Mana Regen
-Hex of the Devastator, Cost: 3, Corruption, 2 Ability penetration4% Crit Chance
-Hinder-Beast, Cost: 3, Fury, 50 Health
-Impact Hammer, Cost: 3, Fury, 12 Power4% Crit Chance
-Irradiate, Cost: 3, Fury, 5.5 Attack Speed
-Killdozer Horn, Cost: 3, Fury, 30 Mana
-Lantern of Spring, Cost: 3, Order, 2 Ability penetration7 Basic armor0.3 Mana Regen
-Lord's Siphon, Cost: 3, Universal, 30 Mana50 Health0.3 Mana Regen
-Lord's Ward, Cost: 3, Universal, 30 Mana50 Health0.3 Mana Regen
-Magna-Lens, Cost: 3, Intellect, 2 Ability penetration0.3 Mana Regen
-Magus' Siphon, Cost: 3, Universal, 6 Power30 Mana
-Magus' Ward, Cost: 3, Universal, 6 Power30 Mana
-Meltdown, Cost: 3, Fury, 12 Power2 Ability penetration
-Merciless, Cost: 3, Fury, 4% Crit Chance5.5 Attack Speed
-Micro-Nuke, Cost: 3, Fury, 12 Power4% Crit Chance
-Mind Flow, Cost: 3, Intellect, 30 Mana
-Muta-Gem, Cost: 3, Intellect, 6 Power30 Mana
-Nirvana Stone, Cost: 3, Order, 4% Crit Chance1.4 Health Regen0.3 Mana Regen
-Oasis Siphon, Cost: 3, Growth, 1.4 Health Regen2.5% Lifesteal
-Offensive Maneuvers, Cost: 3, Order, 8% Crit Chance
-Pendulum of Lords, Cost: 3, Universal, 30 Mana50 Health0.3 Mana Regen
-Quartzblade, Cost: 3, Order, 6 Power0.3 Mana Regen50 Health
-Reaper's Siphon, Cost: 3, Corruption, 6 Power4% Crit Chance
-Reptilian Claw, Cost: 3, Growth, 1.4 Health Regen4% Crit Chance
-Riftmagus Scepter, Cost: 3, Universal, 6 Power4% Crit Chance
-Rust-Breaker, Cost: 3, Fury, 12 Power4 Basic penetration
-Sage's Siphon, Cost: 3, Universal, 6 Power50 Health
-Sage's Ward, Cost: 3, Universal, 6 Power50 Health
-Savage Remedy, Cost: 3, Growth, 30 Mana1.4 Health Regen
-Scourging Tails, Cost: 3, Corruption, 6 Power
-Seek and Destroy, Cost: 3, Corruption, 6 Power
-Shadow Scroll, Cost: 3, Corruption, 6 Power2 Ability penetration
-Silverspear, Cost: 3, Order, 6 Power1.4 Health Regen30 Mana
-Siphon Shard, Cost: 3, Intellect, 1.4 Health Regen2.5% Lifesteal
-Snakevine Mesh, Cost: 3, Growth, 4 Ability armor6 Power
-Solaris Reactor, Cost: 3, Intellect, 6 Power0.3 Mana Regen
-Sorcerer's Ward, Cost: 3, Corruption, 6 Power2 Ability penetration2.5% Lifesteal
-Spear of the Rifthunter, Cost: 3, Universal, 6 Power4% Crit Chance
-Spiked Boneplate, Cost: 3, Growth, 7 Basic armor6 Power
-Staff of Adamant, Cost: 3, Universal, 6 Power30 Mana
-Stalker's Siphon, Cost: 3, Corruption, 2.5% Lifesteal5.5 Attack Speed
-Steelcutter Gem, Cost: 3, Intellect, 4 Basic penetration30 Mana
-Tempered Plate, Cost: 3, Universal, 7 Basic armor50 Health
-Thorned Greenweave, Cost: 3, Growth, 4 Ability armor6 Power
-Tuned Barrier, Cost: 3, Universal, 4 Ability armor50 Health
-Venom Shell, Cost: 3, Growth, 7 Basic armor6 Power
-Viper Bolt, Cost: 3, Corruption, 4 Basic penetration4% Crit Chance
-Vital Tap, Cost: 3, Intellect, 50 Health2.5% Lifesteal
-Voidsteel Dagger, Cost: 3, Corruption, 6 Power4 Basic penetration
-Wellspring Staff, Cost: 3, Universal, 6 Power30 Mana
-Whirling Wand, Cost: 3, Universal, 6 Power5.5 Attack Speed
-Windcarver Blade, Cost: 3, Universal, 6 Power5.5 Attack Speed
-Baneflesh, Cost: 4, Corruption, 4% Crit Chance50 Health
-Blight Bones, Cost: 4, Growth, 50 Health
-Bud of the Changeling, Cost: 4, Growth, 50 Health30 Mana
-Crucial Snare, Cost: 4, Intellect, 0.3 Mana Regen4 Basic penetration
-Curse of the Leech, Cost: 4, Corruption, 6 Power2.5% Lifesteal
-Drink the Spirits, Cost: 4, Corruption, 50 Health30 Mana
-Empyrean Mask, Cost: 4, Order, Unique Toogle:1) +18 damage 2) +10.5 and +6 Armor 3) +0.9 Mana regeneration. 
-Etherweave Mesh, Cost: 4, Intellect, 4 Ability armor0.3 Mana Regen
-Hunter's Guile, Cost: 4, Growth, 6 Power50 Health
-Injured Rage, Cost: 4, Fury, 12 Power
-Lazarus Blade, Cost: 4, Universal, 50 Health
-Marrow-Fangs, Cost: 4, Corruption, 2.5% Lifesteal4 Basic penetration
-Nanoplasm, Cost: 4, Intellect, 50 Health7 Basic armor
-Quantum Casing, Cost: 4, Intellect, 7 Basic armor0.3 Mana Regen
-Quenching Scales, Cost: 4, Universal, 50 Health30 Mana
-Reverberate, Cost: 4, Fury, 12 Power
-Ring of the Domina, Cost: 4, Universal, 50 Health30 Mana
-Silent Indignation, Cost: 4, Growth, 2.5% Lifesteal
-Stonetooth Heart, Cost: 4, Growth, 50 Health4 Basic penetration
-Swiftcreek Heart, Cost: 4, Growth, 50 Health5.5 Attack Speed
-Thickblood, Cost: 4, Universal, 12 Power30 Mana
-Thirstfang, Cost: 4, Corruption, 6 Power5% Lifesteal
-Victory Torch, Cost: 4, Fury, 6 Power0.3 Mana Regen
-Vineheart, Cost: 4, Growth, 50 Health2 Ability penetration
-Battle Mantra, Cost: 5, Order, 6 Power0.3 Mana Regen
-Blink Charm, Cost: 5, Universal, Unique Active:Teleport Forward.
-Blinkshot, Cost: 5, Fury, 6 Power
-Bubble Tap, Cost: 5, Intellect, 60 Mana4 Ability armor
-Charging Brute, Cost: 5, Growth, 6 Power
-Chieftain's Crown, Cost: 5, Growth, 1.4 Health Regen100 Health
-Chrono-Mancer Disc, Cost: 5, Universal, 0.3 Mana Regen6 Power
-Chrono-vore, Cost: 5, Fury, 5.5 Attack Speed0.3 Mana Regen
-Chronospike, Cost: 5, Universal, 30 Mana6 Power
-Clearheart, Cost: 5, Growth, 0.3 Mana Regen
-Cup of the Vampire, Cost: 5, Corruption, 5% Lifesteal4 Basic penetration
-Dreadfeast Relic, Cost: 5, Corruption, 5% Lifesteal4% Crit Chance
-Firepiercer, Cost: 5, Fury, 0.3 Mana Regen
-Font of Rapture, Cost: 5, Order, 1.4 Health Regen0.3 Mana Regen4% Crit Chance
-Heartshot, Cost: 5, Fury, 5.5 Attack Speed
-Incessant Onslaught, Cost: 5, Fury, 5.5 Attack Speed
-Jewel of the Apostle, Cost: 5, Order, 0.3 Mana Regen2.5% Lifesteal
-Megavolt Pylon, Cost: 5, Intellect, 60 Mana0.3 Mana Regen
-Mending Bloom, Cost: 5, Growth, 1.4 Health Regen
-Overflowing Gifts, Cost: 5, Growth, 0.3 Mana Regen
-Pain-Eater, Cost: 5, Fury, 50 Health
-Plasma Channel, Cost: 5, Intellect, 60 Mana
-Portal Stone, Cost: 5, Universal, Unique Active:Teleport to allied structure
-Rally the Troops, Cost: 5, Intellect, 5.5 Attack Speed0.3 Mana Regen
-Rocket Spike, Cost: 5, Fury, 5.5 Attack Speed
-Satori Cloak, Cost: 5, Order, 5.5 Attack Speed
-Shockwave, Cost: 5, Intellect, 0.6 Mana Regen
-Stab Link, Cost: 5, Corruption, 1.4 Health Regen
-Stone of Salvation, Cost: 5, Order, 0.3 Mana Regen2.5% Lifesteal
-Tainted Magic, Cost: 5, Corruption, 1.4 Health Regen0.3 Mana Regen
-Tele-Blink, Cost: 5, Intellect, 0.3 Mana Regen
-Thunder Cleaver, Cost: 5, Universal, 5.5 Attack Speed
-Wicked Stigma, Cost: 5, Corruption, 0.3 Mana Regen50 Health
-Agoran Scepter, Cost: 6, Universal, 30 Mana
-Ash of the Witch, Cost: 6, Universal, 12 Power
-Blade of Agora, Cost: 6, Universal, 6 Power
-Blast Harness, Cost: 6, Fury, 5.5 Attack Speed
-Blood Catalyst, Cost: 6, Intellect, 30 Mana50 Health
-Bloodrite Brand, Cost: 6, Fury, 4% Crit Chance2.5% Lifesteal
-Bounty Stalker, Cost: 6, Universal, 6 Power50 Health
-Cast Converter, Cost: 6, Intellect, 30 Mana0.3 Mana Regen
-Deathnail, Cost: 6, Corruption, 4 Basic penetration
-Everglass, Cost: 6, Order, 0.6 Mana Regen
-Feral Stone, Cost: 6, Growth, 5.5 Attack Speed
-Heart of the Apex, Cost: 6, Growth, 50 Health
-Honor the Pure, Cost: 6, Order, 50 Health30 Mana
-Hunger-Maul, Cost: 6, Fury, 2.5% Lifesteal
-Madspore Sash, Cost: 6, Growth, 1.4 Health Regen7 Basic armor
-Nanodrive, Cost: 6, Intellect, 30 Mana2 Ability penetration
-Nature's Muse, Cost: 6, Growth, 50 Health30 Mana
-Necroveil, Cost: 6, Corruption, 2 Ability penetration6 Power
-Power Chord, Cost: 6, Universal, 6 Power5.5 Attack Speed
-Radiant Mantle, Cost: 6, Order, 50 Health30 Mana
-Scarab Claws, Cost: 6, Corruption, 5.5 Attack Speed0.3 Mana Regen
-Scorpion Plate, Cost: 6, Growth, 50 Health7 Basic armor
-Seeds of the Flood, Cost: 6, Growth, 1.4 Health Regen
-Sirensong, Cost: 6, Corruption, 5% Lifesteal
-Splinterbark Vest, Cost: 6, Growth, 50 Health4 Ability armor
-Stinger Boost, Cost: 6, Universal, 60 Mana11 Attack Speed
-Sword of the Altar, Cost: 6, Order, 2.5% Lifesteal
-Tempus Pearl, Cost: 6, Order, 6 Power4 Ability armor
-Toxi-gel, Cost: 6, Universal, 100 Health
-Wraith Whisper, Cost: 6, Corruption, 2 Ability penetration
-Blackblood Virus, Cost: 7, Corruption, 5% Lifesteal
-Infinity Stream, Cost: 7, Intellect, 0.3 Mana Regen2 Ability penetration
-Stasis Gem, Cost: 7, Order, 6 Power
-Traitor's Touch, Cost: 7, Corruption, 2.5% Lifesteal0.3 Mana Regen
-Barrier of Will, Cost: 8, Intellect, 7 Basic armor30 Mana
-Divine Shield, Cost: 8, Universal, 4 Ability armor60 Mana
-Hydroverser, Cost: 8, Intellect, 0.3 Mana Regen50 Health
-Purity Censer, Cost: 8, Order, 30 Mana50 Health
-Thermo-bond, Cost: 8, Universal, 100 Health4 Ability armor
-Fist of Kings, Cost: 10, Universal, 32 Basic penetration150 Health
-Hand of Prophets, Cost: 10, Universal, 16 Ability penetration150 Health
+Barrier Token,Cost: 1,Universal,4 Ability armor
+Bump Juice,Cost: 1,Fury,Active:Restore 50 Health.|15s.Charges: 2
+Cast Token,Cost: 1,Universal,6 Power
+Chrono-Tonic,Cost: 1,Intellect,Active:For 15 seconds +3.6 Health regeneration and +10% Cooldown reduction.|15s.Charges: 2
+Fiend Elixir,Cost: 1,Corruption,Active:For 15 seconds +2.28 Mana regeneration,and upon receiving damage restore 12 Mana.|15s.Charges: 2
+Guard Token,Cost: 1,Universal,7 Basic armor
+Health Potion,Cost: 1,Universal,Active:For 15 seconds restore 90 Health.|15s.Charges: 2
+Health Token,Cost: 1,Universal,50 Health
+Hunter's Drink,Cost: 1,Growth,Active:For 15 seconds +3.6 Health regeneration and aditiondal 0,6xPlayer level.|15s.Charges: 2
+Jungle Drink,Cost: 1,Growth,Active:For 15 seconds +6 damage and +3.6 Health regeneration.|15s.Charges: 2
+Mana Potion,Cost: 1,Universal,Active:For 15 seconds restore 57 Mana.|15s.Charges: 2
+Mender's Phial,Cost: 1,Order,Active:For 15 seconds +4.37 Health regeneration and for 7 seconds +3.8 Mana regeneration to nearby allies.|15s.Charges: 2
+Scout's Ward,Cost: 1,Universal,Unique Active:Place a Ward to reveal the surrounding area for 1.5 minutes.|60s.Charges: 1
+Shaman's Drink,Cost: 1,Growth,Active:For 15 seconds +2.28 Mana regeneration and aditiondal 0,3xPlayer level. |15s.Charges: 2
+Shepard's Phial,Cost: 1,Order,Active:For 15 seconds +2.85 Mana regeneration and for 7 seconds +6 Health regeneration to nearby allies.|15s.Charges: 2
+Strike Token,Cost: 1,Universal,6 Power
+Vampiric Elixir,Cost: 1,Corruption,Active:For 15 seconds gain +5% Lifesteal and +3.6 Health regeneration.|15s.Charges: 2
+Zap Juice,Cost: 1,Fury,Active:Restore 35 Mana.|15s.Charges: 2
+Flashfire Piston,Cost: 2,Fury,11 Attack Speed|Fully Upgraded Bonus:6 Power
+Hatespitter,Cost: 2,Fury,2 Ability penetration|0.3 Mana Regen|Fully Upgraded Bonus:0.3 Mana Regen
+Healer Token,Cost: 2,Universal,2.8 Health Regen
+Madstone Gem,Cost: 2,Fury,12 Power|Fully Upgraded Bonus:5.5 Attack Speed
+Rageheart Engine,Cost: 2,Fury,4 Basic penetration|0.3 Mana Regen|Fully Upgraded Bonus:0.3 Mana Regen
+Redeye Nitro,Cost: 2,Fury,5.5 Attack Speed|4% Crit Chance|Fully Upgraded Bonus:5.5 Attack Speed
+Adamant Edge,Cost: 3,Universal,6 Power|50 Health|Fully Upgraded Bonus:12 Power
+Amp Crystal,Cost: 3,Intellect,6 Power|30 Mana|Fully Upgraded Bonus:60 Mana
+Amulet of the Veteran,Cost: 3,Universal,100 Health|Fully Upgraded Bonus:6 Power|50 Health
+Armavore,Cost: 3,Fury,2 Ability penetration|Unique Passive:On hit with basic attack,restore 2 Mana.
+Assassin's Ward,Cost: 3,Corruption,6 Power|4 Basic penetration|2.5% Lifesteal|Unique Active:Place a Shadow Ward to reveal the surrounding area for 1.5 minutes.
+Backstabber,Cost: 3,Corruption,4% Crit Chance|Unique Passive:+24% Critical chance versus heroes not in combat.
+Beastmaster's Scythe,Cost: 3,Universal,50 Health|5.5 Attack Speed|Unique Passive:+15% Damage bonus against Jungle minions.
+Berzerker Drive,Cost: 3,Fury,6 Power|0.3 Mana Regen|5.5 Attack Speed|Fully Upgraded Bonus:5.5 Attack Speed
+Bloodsoaked Armor,Cost: 3,Corruption,7 Basic armor|5.5 Attack Speed|Unique Active:For 6 seconds,when hit by a basic attack,apply a Bleed stack to attacker (Max 10 stacks).
+Bone Dice,Cost: 3,Fury,4% Crit Chance|Unique Passive:While Critically wounded,gain +20% critical chance.
+Brand of the Ironeater,Cost: 3,Fury,4% Crit Chance|5% Lifesteal|Fully Upgraded Bonus:2.5% Lifesteal
+Brawler's Scythe,Cost: 3,Universal,6 Power|30 Mana|Unique Passive:+15% Damage bonus against Jungle minions.
+Brawler's Ward,Cost: 3,Universal,6 Power|30 Mana|Unique Active:Place a Shadow Ward to reveal the surrounding area for 1.5 minutes.
+Brightsteel Plate,Cost: 3,Order,7 Basic armor|8% Crit Chance|Fully Upgraded Bonus:7 Basic armor
+Burnblood Powder,Cost: 3,Fury,6 Power|0.3 Mana Regen|5.5 Attack Speed|Fully Upgraded Bonus:0.3 Mana Regen
+Burst-Engine,Cost: 3,Intellect,6 Power|0.3 Mana Regen|Fully Upgraded Bonus:12 Power
+Celestine Diamond,Cost: 3,Order,6 Power|0.3 Mana Regen|30 Mana|Fully Upgraded Bonus:30 Mana
+Circlet of Health,Cost: 3,Universal,30 Mana|Unique Passive:+2.8 Health regeneration to nearby allies.
+Circlet of Mana,Cost: 3,Universal,50 Health|Unique Passive:+0.6 Mana regeneration to nearby allies.
+Combustion,Cost: 3,Fury,0.3 Mana Regen|Unique Passive:While Burning,gain +16.5 Attack speed and +160 Movement speed.
+Crystal Conduit,Cost: 3,Intellect,2 Ability penetration|30 Mana|Fully Upgraded Bonus:60 Mana
+Eldermage Amulet,Cost: 3,Universal,6 Power|50 Health|Fully Upgraded Bonus:100 Health
+Elysian Diamond,Cost: 3,Order,6 Power|0.3 Mana Regen|50 Health|Fully Upgraded Bonus:50 Health
+Executioner's Scythe,Cost: 3,Corruption,6 Power|4% Crit Chance|Unique Passive:+15% Damage bonus against Jungle minions.
+Fountain Spike,Cost: 3,Universal,6 Power|30 Mana|Fully Upgraded Bonus:6 Power|30 Mana
+Fracturing Spike,Cost: 3,Intellect,4 Basic penetration|0.3 Mana Regen|Fully Upgraded Bonus:12 Power
+Genesis Torch,Cost: 3,Order,4 Basic penetration|4 Ability armor|0.3 Mana Regen|Fully Upgraded Bonus:0.3 Mana Regen
+Gift of the Rains,Cost: 3,Growth,0.3 Mana Regen|1.4 Health Regen|Fully Upgraded Bonus:2.8 Health Regen
+Golden Veil,Cost: 3,Order,4 Ability armor|8% Crit Chance|Fully Upgraded Bonus:4 Ability armor
+Guardian's Scythe,Cost: 3,Universal,6 Power|50 Health|Unique Passive:+15% Damage bonus against Jungle minions.
+Guardian's Ward,Cost: 3,Universal,6 Power|50 Health|Unique Active:Place a Shadow Ward to reveal the surrounding area for 1.5 minutes.
+Hemorrhage,Cost: 3,Fury,0.3 Mana Regen|Unique Passive:While Bleeding,gain +16.5 Attack speed and +18 damage.
+Hex of the Devastator,Cost: 3,Corruption,2 Ability penetration|4% Crit Chance|Fully Upgraded Bonus:8% Crit Chance
+Hinder-Beast,Cost: 3,Fury,50 Health|Unique Passive:While carryung River buff,on hit basic attack,slow target by 5% for 1.5 seconds.
+Impact Hammer,Cost: 3,Fury,12 Power|4% Crit Chance|Fully Upgraded Bonus:4% Crit Chance
+Irradiate,Cost: 3,Fury,5.5 Attack Speed|Unique Passive:While Poisoned,gain +7.5% Cooldown reduction and +19.5 damage.
+Killdozer Horn,Cost: 3,Fury,30 Mana|Unique Passive:+6 damage to nearby allies minions.
+Lantern of Spring,Cost: 3,Order,2 Ability penetration|7 Basic armor|0.3 Mana Regen|Fully Upgraded Bonus:0.3 Mana Regen
+Lord's Siphon,Cost: 3,Universal,30 Mana|50 Health|0.3 Mana Regen|Unique Passive:Basic attacks on Jungle Minions,restore 8 health.
+Lord's Ward,Cost: 3,Universal,30 Mana|50 Health|0.3 Mana Regen|Unique Active:Place a Shadow Ward to reveal the surrounding area for 1.5 minutes.
+Magna-Lens,Cost: 3,Intellect,2 Ability penetration|0.3 Mana Regen|Fully Upgraded Bonus:12 Power
+Magus' Siphon,Cost: 3,Universal,6 Power|30 Mana|Unique Passive:Basic attacks on Jungle Minions,restore 8 health.
+Magus' Ward,Cost: 3,Universal,6 Power|30 Mana|Unique Active:Place a Shadow Ward to reveal the surrounding area for 1.5 minutes.
+Meltdown,Cost: 3,Fury,12 Power|2 Ability penetration|Fully Upgraded Bonus:6 Power
+Merciless,Cost: 3,Fury,4% Crit Chance|5.5 Attack Speed|Unique Passive:+12% Critical chance against Bleeding target.
+Micro-Nuke,Cost: 3,Fury,12 Power|4% Crit Chance|Fully Upgraded Bonus:6 Power
+Mind Flow,Cost: 3,Intellect,30 Mana|Unique Passive:+10% Cooldown reduction,while over 50%Mana.
+Muta-Gem,Cost: 3,Intellect,6 Power|30 Mana|Fully Upgraded Bonus:0.6 Mana Regen
+Nirvana Stone,Cost: 3,Order,4% Crit Chance|1.4 Health Regen|0.3 Mana Regen|Fully Upgraded Bonus:4% Crit Chance
+Oasis Siphon,Cost: 3,Growth,1.4 Health Regen|2.5% Lifesteal|Unique Passive:Basic attacks on Jungle Minions,restore 8 health.
+Offensive Maneuvers,Cost: 3,Order,8% Crit Chance|Unique Passive:+10 Physical armor and +Energy armor against basic attacks.
+Pendulum of Lords,Cost: 3,Universal,30 Mana|50 Health|0.3 Mana Regen|Fully Upgraded Bonus:0.3 Mana Regen
+Quartzblade,Cost: 3,Order,6 Power|0.3 Mana Regen|50 Health|Fully Upgraded Bonus:6 Power
+Reaper's Siphon,Cost: 3,Corruption,6 Power|4% Crit Chance|Unique Passive:Basic attacks on Jungle Minions,restore 8 health.
+Reptilian Claw,Cost: 3,Growth,1.4 Health Regen|4% Crit Chance|Fully Upgraded Bonus:2.8 Health Regen
+Riftmagus Scepter,Cost: 3,Universal,6 Power|4% Crit Chance|Fully Upgraded Bonus:12 Power
+Rust-Breaker,Cost: 3,Fury,12 Power|4 Basic penetration|Fully Upgraded Bonus:6 Power
+Sage's Siphon,Cost: 3,Universal,6 Power|50 Health|Unique Passive:Basic attacks on Jungle Minions,restore 8 health.
+Sage's Ward,Cost: 3,Universal,6 Power|50 Health|Unique Active:Place a Shadow Ward to reveal the surrounding area for 1.5 minutes.
+Savage Remedy,Cost: 3,Growth,30 Mana|1.4 Health Regen|Fully Upgraded Bonus:2.8 Health Regen
+Scourging Tails,Cost: 3,Corruption,6 Power|Active: For 6 seconds,on hit with ability shred 20 Armor from target(s) for 15 seconds.
+Seek and Destroy,Cost: 3,Corruption,6 Power|Unique Active:For 6 seconds +40 Movement speed +5.5 Attack speed for each nearby Bleeding unit. (Max - +280 Movement speed and +38.5 Attack speed)
+Shadow Scroll,Cost: 3,Corruption,6 Power|2 Ability penetration|Fully Upgraded Bonus:4 Ability penetration
+Silverspear,Cost: 3,Order,6 Power|1.4 Health Regen|30 Mana|Fully Upgraded Bonus:6 Power
+Siphon Shard,Cost: 3,Intellect,1.4 Health Regen|2.5% Lifesteal|Fully Upgraded Bonus:5% Lifesteal
+Snakevine Mesh,Cost: 3,Growth,4 Ability armor|6 Power|Fully Upgraded Bonus:8 Ability armor
+Solaris Reactor,Cost: 3,Intellect,6 Power|0.3 Mana Regen|Fully Upgraded Bonus:0.6 Mana Regen
+Sorcerer's Ward,Cost: 3,Corruption,6 Power|2 Ability penetration|2.5% Lifesteal|Unique Active:Place a Shadow Ward to reveal the surrounding area for 1.5 minutes.
+Spear of the Rifthunter,Cost: 3,Universal,6 Power|4% Crit Chance|Fully Upgraded Bonus:8% Crit Chance
+Spiked Boneplate,Cost: 3,Growth,7 Basic armor|6 Power|Fully Upgraded Bonus:14 Basic armor
+Staff of Adamant,Cost: 3,Universal,6 Power|30 Mana|Fully Upgraded Bonus:12 Power
+Stalker's Siphon,Cost: 3,Corruption,2.5% Lifesteal|5.5 Attack Speed|Unique Passive:Basic attacks on Jungle minions,restore 8 health.
+Steelcutter Gem,Cost: 3,Intellect,4 Basic penetration|30 Mana|Fully Upgraded Bonus:60 Mana
+Tempered Plate,Cost: 3,Universal,7 Basic armor|50 Health|Fully Upgraded Bonus:14 Basic armor
+Thorned Greenweave,Cost: 3,Growth,4 Ability armor|6 Power|Fully Upgraded Bonus:12 Power
+Tuned Barrier,Cost: 3,Universal,4 Ability armor|50 Health|Fully Upgraded Bonus:8 Ability armor
+Venom Shell,Cost: 3,Growth,7 Basic armor|6 Power|Fully Upgraded Bonus:12 Power
+Viper Bolt,Cost: 3,Corruption,4 Basic penetration|4% Crit Chance|Fully Upgraded Bonus:8% Crit Chance
+Vital Tap,Cost: 3,Intellect,50 Health|2.5% Lifesteal|Fully Upgraded Bonus:100 Health
+Voidsteel Dagger,Cost: 3,Corruption,6 Power|4 Basic penetration|Fully Upgraded Bonus:12 Power
+Wellspring Staff,Cost: 3,Universal,6 Power|30 Mana|Fully Upgraded Bonus:30 Mana|0.3 Mana Regen
+Whirling Wand,Cost: 3,Universal,6 Power|5.5 Attack Speed|Fully Upgraded Bonus:11 Attack Speed
+Windcarver Blade,Cost: 3,Universal,6 Power|5.5 Attack Speed|Fully Upgraded Bonus:12 Power
+Baneflesh,Cost: 4,Corruption,4% Crit Chance|50 Health|Active:For 4 seconds,when hit by a basic attack,apply a Poison stack to attacker (Max 10 stacks).
+Blight Bones,Cost: 4,Growth,50 Health|Unique Passive:When hit by a critical strike,apply Blight to the attacker (Blight reduces healing by 75%)
+Bud of the Changeling,Cost: 4,Growth,50 Health|30 Mana|Unique Passive: While Poisoned,increase all Healing received by 100%.
+Crucial Snare,Cost: 4,Intellect,0.3 Mana Regen|4 Basic penetration|Unique Active:For 6 seconds,when hit by a basic attack,slow attackers by 250 for 2 seconds.
+Curse of the Leech,Cost: 4,Corruption,6 Power|2.5% Lifesteal|Fully Upgraded Bonus:7.5% Lifesteal
+Drink the Spirits,Cost: 4,Corruption,50 Health|30 Mana|Unique Passive:On kill or assist,heal for 5% of killed unit's Health over 10 seconds.
+Empyrean Mask,Cost: 4,Order,Unique Toogle:1) +18 damage 2) +10.5 and +6 Armor 3) +0.9 Mana regeneration. 
+Etherweave Mesh,Cost: 4,Intellect,4 Ability armor|0.3 Mana Regen|Fully Upgraded Bonus:0.9 Mana Regen
+Hunter's Guile,Cost: 4,Growth,6 Power|50 Health|Unique Active:Removes all debuffs from your hero.
+Injured Rage,Cost: 4,Fury,12 Power|Fully Upgraded Bonus:
+Lazarus Blade,Cost: 4,Universal,50 Health|Unique Passive:Basic attacks on Jungle Minions,restore 15% health.
+Marrow-Fangs,Cost: 4,Corruption,2.5% Lifesteal|4 Basic penetration|Unique Passive:While Bleeding,on hit with basic attack,steal 9 armor from target for 6 seconds.
+Nanoplasm,Cost: 4,Intellect,50 Health|7 Basic armor|Unique Passive:While Bleeding,gain +35 and +20 armor against critical strike.
+Quantum Casing,Cost: 4,Intellect,7 Basic armor|0.3 Mana Regen|Fully Upgraded Bonus:0.6 Mana Regen|7 Basic armor
+Quenching Scales,Cost: 4,Universal,50 Health|30 Mana|Unique Passive:Grants 0.6 increased Mana Regen in a radius.
+Reverberate,Cost: 4,Fury,12 Power|Unique Active:For 4 seconds,gain 50% Damage bonus against Shield.
+Ring of the Domina,Cost: 4,Universal,50 Health|30 Mana|Unique Passive:+10% Damage bonus against minions.
+Silent Indignation,Cost: 4,Growth,2.5% Lifesteal|Unique Active:+27.5 Attack speed for 6 seconds.
+Stonetooth Heart,Cost: 4,Growth,50 Health|4 Basic penetration|Fully Upgraded Bonus:150 Health
+Swiftcreek Heart,Cost: 4,Growth,50 Health|5.5 Attack Speed|Fully Upgraded Bonus:150 Health
+Thickblood,Cost: 4,Universal,12 Power|30 Mana|Unique Passive:Hitting an enemy with an ability applies Blight for 4 seconds.
+Thirstfang,Cost: 4,Corruption,6 Power|5% Lifesteal|Fully Upgraded Bonus:12 Power
+Victory Torch,Cost: 4,Fury,6 Power|0.3 Mana Regen|Fully Upgraded Bonus:
+Vineheart,Cost: 4,Growth,50 Health|2 Ability penetration|Fully Upgraded Bonus:150 Health
+Battle Mantra,Cost: 5,Order,6 Power|0.3 Mana Regen|Unique Passive:+1.5 Mana regeneration,while over 50% Mana.
+Blink Charm,Cost: 5,Universal,Unique Active:Teleport Forward.|180s.
+Blinkshot,Cost: 5,Fury,6 Power|Unique Active:Teleport Forward
+Bubble Tap,Cost: 5,Intellect,60 Mana|4 Ability armor|Unique Active:Consume 60 Mana,for 3 seconds gain Shield 35% of current Mana.
+Charging Brute,Cost: 5,Growth,6 Power|Unique Passive:On unit kill,gain +10 Movement speed for 5 seconds.(Max +140 Movement speed).
+Chieftain's Crown,Cost: 5,Growth,1.4 Health Regen|100 Health|Unique Passive:+4.2 Health regeneration to neary allied minions.
+Chrono-Mancer Disc,Cost: 5,Universal,0.3 Mana Regen|6 Power|Fully Upgraded Bonus:10% Cooldown Reduction
+Chrono-vore,Cost: 5,Fury,5.5 Attack Speed|0.3 Mana Regen|Fully Upgraded Bonus:10% Cooldown Reduction
+Chronospike,Cost: 5,Universal,30 Mana|6 Power|Fully Upgraded Bonus:10% Cooldown Reduction
+Clearheart,Cost: 5,Growth,0.3 Mana Regen|Unique Passive:+15% increase all Healing
+Cup of the Vampire,Cost: 5,Corruption,5% Lifesteal|4 Basic penetration|Unique Passive:+12.5% Lifesteal against Bleeding target.
+Dreadfeast Relic,Cost: 5,Corruption,5% Lifesteal|4% Crit Chance|Active:For 6 seconds,on hit with ability,apply 12.5%Life grant to enemy target for 4 seconds. Attacking an enemy marked with Life Grant gives +12.5% Lifesteal to attacker.
+Firepiercer,Cost: 5,Fury,0.3 Mana Regen|Active:For 10 seconds,your next basic attack on an Enemy Hero will shred 45% of their Armor for 4 seconds.
+Font of Rapture,Cost: 5,Order,1.4 Health Regen|0.3 Mana Regen|4% Crit Chance|Unique Passive:Lifesteal will overheal,granting Shield for 3 seconds,absorbs 10% damage of max Health
+Heartshot,Cost: 5,Fury,5.5 Attack Speed|Unique Passive:On Player kill,gain +280 Movement speed for 4 seconds.
+Incessant Onslaught,Cost: 5,Fury,5.5 Attack Speed|Unique Passive:Basic attacks on Player,grant +10% Cooldown reduction for 4 seconds.
+Jewel of the Apostle,Cost: 5,Order,0.3 Mana Regen|2.5% Lifesteal|Unique Active:For 6 seconds gain damage equal to 35% of armor.
+Megavolt Pylon,Cost: 5,Intellect,60 Mana|0.3 Mana Regen|Unique Active:Restore 15 Mana for each nearby Unit.
+Mending Bloom,Cost: 5,Growth,1.4 Health Regen|Unique Active:+3.8 Mana regeneration to nearby allied for 14 seconds.
+Overflowing Gifts,Cost: 5,Growth,0.3 Mana Regen|Unique Active:+6 Health regeneration to nearby allied for 14 seconds.
+Pain-Eater,Cost: 5,Fury,50 Health|Unique Passive:While critically wounded,gain 40% Life Steal
+Plasma Channel,Cost: 5,Intellect,60 Mana|Active:Shred 8 Armor from nearby enemues for 4 seconds. Shred value stacks based on number of nearby Enemy Heroes.
+Portal Stone,Cost: 5,Universal,Unique Active:Teleport to allied structure|300s.
+Rally the Troops,Cost: 5,Intellect,5.5 Attack Speed|0.3 Mana Regen|Unique Active:For 5 second +22 Attack speed to nearby allies.
+Rocket Spike,Cost: 5,Fury,5.5 Attack Speed|Active:For 10 seconds,your next basic attack on an Enemy Hero will shred 45% of their Armor for 4 seconds.
+Satori Cloak,Cost: 5,Order,5.5 Attack Speed|Unique Passive:On hit with basic attack,shred 50% of enemy's armor for 1.5 seconds.
+Shockwave,Cost: 5,Intellect,0.6 Mana Regen|Unique Active:For 2 seconds slow nearby enemies by 250 .
+Stab Link,Cost: 5,Corruption,1.4 Health Regen|Unique Active:Consume 20% of your Base Health to Teleport Forward. Cannot use if Critically Wounded.
+Stone of Salvation,Cost: 5,Order,0.3 Mana Regen|2.5% Lifesteal|Unique Active:For 6 second gain damage equal to 35% of armor.
+Tainted Magic,Cost: 5,Corruption,1.4 Health Regen|0.3 Mana Regen|Active:For 6 seconds,on hit with ability,apply a stack of Poison to target (6 + 1.5*Player level).
+Tele-Blink,Cost: 5,Intellect,0.3 Mana Regen|Unique Active:Consume 75 Mana to Teleport Forward.
+Thunder Cleaver,Cost: 5,Universal,5.5 Attack Speed|Unique Passive:Melee basic attacks gains an additional 50% Damage Bonus to Cleave.
+Wicked Stigma,Cost: 5,Corruption,0.3 Mana Regen|50 Health|Unique Active:For 6 seconds,on hit with ability,gain vision of target for 10 seconds.
+Agoran Scepter,Cost: 6,Universal,30 Mana|Fully Upgraded Bonus:100% Crit Bonus
+Ash of the Witch,Cost: 6,Universal,12 Power|Unique Passive:Enemies hit by abilities are slowed by 150 move speed for 1 second.
+Blade of Agora,Cost: 6,Universal,6 Power|Fully Upgraded Bonus:100% Crit Bonus
+Blast Harness,Cost: 6,Fury,5.5 Attack Speed|Fully Upgraded Bonus:100% Crit Bonus
+Blood Catalyst,Cost: 6,Intellect,30 Mana|50 Health|Unique Active:Consume 10% of Health,for 10 seconds gain 10.5 Mana regeneration.
+Bloodrite Brand,Cost: 6,Fury,4% Crit Chance|2.5% Lifesteal|Fully Upgraded Bonus:
+Bounty Stalker,Cost: 6,Universal,6 Power|50 Health|Unique Passive:Basic attacks on Players,grant a stack of +6% Critical chance for 4 seconds (Max 7 stacks)
+Cast Converter,Cost: 6,Intellect,30 Mana|0.3 Mana Regen|Unique Active:Consume 175 Mana,for 10 second gain 47.5 Health regeneration.
+Deathnail,Cost: 6,Corruption,4 Basic penetration|Fully Upgraded Bonus:100% Crit Bonus
+Everglass,Cost: 6,Order,0.6 Mana Regen|Unique Active:+40 Speed for 1 second on hit with ability.
+Feral Stone,Cost: 6,Growth,5.5 Attack Speed|Fully Upgraded Bonus:100% Crit Bonus
+Heart of the Apex,Cost: 6,Growth,50 Health|Fully Upgraded Bonus:100% Crit Bonus
+Honor the Pure,Cost: 6,Order,50 Health|30 Mana|Unique Active:Team Shield: Consume 100 Mana to Shield yourself and nearby Allies for 3 seconds,absorbing up to 125 + (25 * Player Level) damage. Any Ally affected by Team Shield cannot activate or benefit from another Team Shield for 15 seconds.
+Hunger-Maul,Cost: 6,Fury,2.5% Lifesteal|Fully Upgraded Bonus:100% Crit Bonus
+Madspore Sash,Cost: 6,Growth,1.4 Health Regen|7 Basic armor|Unique Passive:Deal 10 damage + Player leve) per second to nearby enemies (disables while sprinting).
+Nanodrive,Cost: 6,Intellect,30 Mana|2 Ability penetration|Unique Active:For 4 seconds +20 Movement speed for each nearby Player. (Max - +320 Movement speed).
+Nature's Muse,Cost: 6,Growth,50 Health|30 Mana|Fully Upgraded Bonus:
+Necroveil,Cost: 6,Corruption,2 Ability penetration|6 Power|Unique Passive:On Player kill,enter the shadowplate for 3 seconds.
+Power Chord,Cost: 6,Universal,6 Power|5.5 Attack Speed|Unique Passive:Hitting an enemy with a basic attack applies Blight for 4 seconds.
+Radiant Mantle,Cost: 6,Order,50 Health|30 Mana|Unique Passive:Deal damage (10 + Player level) per second to nearby enemies (disables while sprinting).
+Scarab Claws,Cost: 6,Corruption,5.5 Attack Speed|0.3 Mana Regen|Unique Passive:On hit with basic attack,to a target with a shield shreds all of their 20% armor for 6 seconds
+Scorpion Plate,Cost: 6,Growth,50 Health|7 Basic armor|Active:For 6 seconds,on hit with basic attack,shred 2 Armor from target(s) for 4 seconds. Consecutive hits shred an additional 2 Armor and refresh duration.
+Seeds of the Flood,Cost: 6,Growth,1.4 Health Regen|Fully Upgraded Bonus:100% Crit Bonus
+Sirensong,Cost: 6,Corruption,5% Lifesteal|Unique Active:For 6 seconds,on hit with basic attack,slow by 40 from target for 4 seconds.
+Splinterbark Vest,Cost: 6,Growth,50 Health|4 Ability armor|Active:For 6 seconds,on hit with basic attack,shred 4 Armor from target(s) for 4 seconds. Consecutive hits shred an additional 4 Armor and refresh duration.
+Stinger Boost,Cost: 6,Universal,60 Mana|11 Attack Speed|Unique Passive:After hitting an enemy hero with an ability,your next basic attack deals 50 + (20% of Power) bonus damage. Can only occur once every 1.5 seconds.
+Sword of the Altar,Cost: 6,Order,2.5% Lifesteal|Fully Upgraded Bonus:100% Crit Bonus
+Tempus Pearl,Cost: 6,Order,6 Power|4 Ability armor|Unique Active:+100 Movement speed to nearby allies for 3 seconds.
+Toxi-gel,Cost: 6,Universal,100 Health|Unique Passive:Taking 400 damage activates a self cleanse. Being out of combat for 5 seconds resets the counter.
+Wraith Whisper,Cost: 6,Corruption,2 Ability penetration|Fully Upgraded Bonus:100% Crit Bonus
+Blackblood Virus,Cost: 7,Corruption,5% Lifesteal|Fully Upgraded Bonus:100% Crit Bonus
+Infinity Stream,Cost: 7,Intellect,0.3 Mana Regen|2 Ability penetration|Unique Passive:+2.4 Mana regeneration (scales with current Mana percent)
+Stasis Gem,Cost: 7,Order,6 Power|Unique Active:Become immune to damage for 2.5 seconds. During this time,you are unable to move,attack or use abilities.
+Traitor's Touch,Cost: 7,Corruption,2.5% Lifesteal|0.3 Mana Regen|Unique Passive:Basic attacks on Player deal damage equal by 3% of their current Health.
+Barrier of Will,Cost: 8,Intellect,7 Basic armor|30 Mana|Unique Active:Team Shield: Consume 100 Mana to Shield yourself and nearby Allies for 3 seconds,absorbing up to 125 + (25 * Player Level) damage. Any Ally affected by Team Shield cannot activate or benefit from another Team Shield for 15 seconds.
+Divine Shield,Cost: 8,Universal,4 Ability armor|60 Mana|Unique Passive:Block an enemy ability.
+Hydroverser,Cost: 8,Intellect,0.3 Mana Regen|50 Health|Unique Passive:Gain power equal to 7% of current Mana
+Purity Censer,Cost: 8,Order,30 Mana|50 Health|Unique Active:Removes all debuffs from nearby allies.
+Thermo-bond,Cost: 8,Universal,100 Health|4 Ability armor|Unique Passive:Being hit by stuns,roots,and knockups grants a stack of health regen equal to 12% of your max health over 4 seconds.
+Fist of Kings,Cost: 10,Universal,32 Basic penetration|150 Health
+Hand of Prophets,Cost: 10,Universal,16 Ability penetration|150 Health
