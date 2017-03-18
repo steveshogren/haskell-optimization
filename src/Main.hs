@@ -23,9 +23,8 @@ main = do
     middleware $ staticPolicy (noDots >-> addBase "static/dist")
 
     post "/dps" $ do
-      setting <- jsonData :: ActionM UISetting
-      json $ DP.maxDps (has_ward setting) (has_blink setting) (desired_lifesteal setting) (hero_name setting) 0
-
+      s <- jsonData :: ActionM UISetting
+      json $ DP.maxDps (has_ward s) (has_blink s) (desired_lifesteal s) (hero_name s) 0 (enemy_armor s)
     post "/optimize" $ do
       build <- jsonData :: ActionM OP.Build
       r <- liftIO $ OP.optimize build

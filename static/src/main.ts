@@ -50,7 +50,10 @@ function checkboxBoolean(checkbox$ : DOMSource) {
 }
 
 function lifeStealDropDown() {
-    return input('.ls', {attrs: {type: 'number', min:0, max:20}}, 0)
+    return input('.ls', {attrs: {type: 'number', value: 0, min:0, max:20}}, 0)
+}
+function enemyArmorDropDown() {
+    return input('.en_armor', {attrs: {type: 'number', value: 31.5, min:0, max:200}}, 31.5)
 }
 
 function view(state$ : any) {
@@ -70,7 +73,8 @@ function view(state$ : any) {
                          , 'Hero?']),
                     div([input('.ward', {attrs: {type: 'checkbox'}}), 'Ward?']),
                     div([input('.blink', {attrs: {type: 'checkbox'}}), 'Blink?']),
-                    div([lifeStealDropDown(), 'Lifesteal'])
+                    div([lifeStealDropDown(), 'Lifesteal']),
+                    div([enemyArmorDropDown(), 'Enemy Armor'])
                 ]),
                 button('.get-dps', 'Get dps'),
 
@@ -98,6 +102,13 @@ function intent(dom) {
 
     const changeWard$ = checkboxBoolean(dom.select('.ward'));
     const changeBlink$ = checkboxBoolean(dom.select('.blink'));
+
+    const changeEArmor$ = dom.select('.en_armor')
+        .events('change')
+        .map((ev:Event) => {
+            var i = parseFloat((ev.target as any).value);
+            return i || 31.5;
+        }).startWith(31.5);
     const changeLs$ = dom.select('.ls')
         .events('change')
         .map((ev:Event) => {
@@ -117,13 +128,14 @@ function intent(dom) {
                                    changeWard$,
                                    changeBlink$,
                                    changeLs$,
+                                   changeEArmor$,
                                    changeHero$)
-        .map(([clickedEvent, ward, blink, ls, hero]) => {
+        .map(([clickedEvent, ward, blink, ls, enArmor, hero]) => {
             return {
                 url: '/dps',
                 category: 'dps',
                 method: 'POST',
-                send: {has_blink: blink, has_ward: ward, desired_lifesteal: ls, hero_name: hero}
+                send: {has_blink: blink, has_ward: ward, desired_lifesteal: ls, enemy_armor: enArmor, hero_name: hero}
             };
         });
 
@@ -134,6 +146,7 @@ function intent(dom) {
         changeHero$ : changeHero$,
         changeBlink$ : changeBlink$,
         changeLs$ : changeLs$,
+        changeEArmor$ : changeEArmor$,
         httpRequest$ : xs.merge(optimizeRequest$, dpsRequest$)
     }
 }

@@ -69,7 +69,6 @@ data Card = Card
     , _ward :: Integer
     , _blink :: Integer
     , _name :: String
-    , _letter :: String
     , _firstType :: String
     , _secondType :: String
     , _afinity :: Afinity
@@ -80,8 +79,10 @@ data Card = Card
     , _basicArmor :: Integer
     , _abilityArmor :: Integer
     , _abilityPen :: Integer
-    }
+    } deriving (Show)
 makeLenses ''Card
+
+type CardSetter = ASetter Card Card Integer Integer
 
 defaultCard =
   Card { _cost = 0
@@ -94,7 +95,6 @@ defaultCard =
        , _ward = 0
        , _blink = 0
        , _name = ""
-       , _letter = ""
        , _afinity = Universal
        , _firstType = ""
        , _secondType = ""
@@ -107,8 +107,8 @@ defaultCard =
        , _abilityPen  = 0
        }
 
-toCard :: (Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, String, Afinity) -> String -> Card
-toCard (cost, power, speed, crit, pen, lifesteal, crit_bonus, ward, blink, name, afinity) letter =
+toCard :: (Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer, String, Afinity) -> Card
+toCard (cost, power, speed, crit, pen, lifesteal, crit_bonus, ward, blink, name, afinity) =
   Card { _cost = cost
        , _power = power
        , _speed = speed
@@ -119,7 +119,6 @@ toCard (cost, power, speed, crit, pen, lifesteal, crit_bonus, ward, blink, name,
        , _ward = ward
        , _blink = blink
        , _name = name
-       , _letter = letter
        , _afinity = afinity
        , _firstType = ""
        , _secondType = ""
@@ -160,6 +159,7 @@ heroFromName _ = toHero 0 0 0 0 0 []
 data UISetting = UISetting { hero_name :: String
                            , has_blink :: Bool
                            , has_ward :: Bool
+                           , enemy_armor :: Double
                            , desired_lifesteal :: Integer}
              deriving (Show, Generic)
 instance ToJSON UISetting

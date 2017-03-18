@@ -14,53 +14,13 @@ import Data.LinearProgram as DLP
 import Data.List
 import qualified DamagePen as DP
 import Types
+import qualified Cards as C
 import qualified Data.Set as Set
 
 -- Types
 
 mainCards :: Hero -> [Card]
-mainCards hero =
-  let hero_afinities = (hero^.afinities)
-
-     -- (cost, power, speed, crit, pen, lifesteal, crit_bonus, ward, blink, name, afinity)
-      allCards = zipWith toCard
-                 [(2, 2, 1, 0, 0, 0, 0, 0, 0, "madstone gem", Fury)
-                 ,(2, 0, 2, 1, 0, 0, 0, 0, 0, "redeye nitro", Fury)
-                 ,(2, 1, 2, 0, 0, 0, 0, 0, 0, "flashfire piston", Fury)
-                 ,(3, 2, 0, 2, 0, 0, 0, 0, 0, "impact hammer", Fury)
-                 ,(3, 0, 0, 1, 0, 3, 0, 0, 0, "brand ironeater", Fury)
-                 ,(3, 3, 0, 0, 1, 0, 0, 0, 0, "rustbreaker", Fury)
-                 ,(3, 3, 0, 1, 0, 0, 0, 0, 0, "micro-nuke", Fury)
-                 ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "hunger maul", Fury)
-                 ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "blast harness", Fury)
-                 ,(5, 1, 0, 0, 0, 0, 0, 0, 1, "blinkshot", Universal)
-
-                 ,(3, 3, 1, 0, 0, 0, 0, 0, 0, "windcarver blade", Universal)
-                 ,(3, 3, 0, 1, 0, 0, 0, 0, 0, "riftmagus scepter", Universal)
-                 ,(3, 1, 0, 3, 0, 0, 0, 0, 0, "spear rifthunter", Universal)
-                 ,(3, 1, 3, 0, 0, 0, 0, 0, 0, "whirling wand", Universal)
-                 ,(6, 1, 0, 0, 0, 0, 1, 0, 0, "blade of agora", Universal)
-                 ,(3, 2, 0, 0, 0, 0, 0, 1, 0, "sages ward", Universal)
-                 ,(5, 0, 0, 0, 0, 0, 0, 0, 1, "blink charm", Universal)
-
-                 ,(6, 0, 0, 0, 0, 1, 1, 0, 0, "sword of the altar", Order)
-
-                 ,(6, 0, 0, 0, 1, 0, 1, 0, 0, "deathnail", Corruption)
-                 ,(7, 0, 0, 0, 0, 2, 1, 0, 0, "blackblood virus", Corruption)
-                 ,(3, 0, 0, 3, 1, 0, 0, 0, 0, "viper bolt", Corruption)
-                 ,(3, 3, 0, 0, 1, 0, 0, 0, 0, "voidsteel daggar", Corruption)
-
-                 ,(6, 0, 1, 0, 0, 0, 1, 0, 0, "feral stone", Growth)
-                 ,(3, 0, 0, 0, 0, 1, 0, 0, 0, "oasis siphon", Growth)
-
-                 ,(3, 2, 0, 0, 1, 0, 0, 0, 0, "fracturing spike", Intellect)
-                 ,(3, 0, 0, 0, 0, 3, 0, 0, 0, "focussed drain", Intellect)
-                 ,(3, 0, 0, 0, 0, 3, 0, 0, 0, "siphon shard", Intellect)
-                 ,(3, 0, 0, 0, 0, 1, 0, 0, 0, "vital tap", Intellect)
-                 ]
-                 (map (\a -> [a]) ['a'..])
-  in (filter (\card -> (Universal == card^.afinity)
-               || (elem (card^.afinity) hero_afinities)) allCards)
+mainCards hero = C.bestCarryCards (hero^.afinities)
 
 -- Logic
 
@@ -95,7 +55,6 @@ collectAllPermutations :: Hero -> (Card -> t) -> [OptTuple t]
 collectAllPermutations hero fn =
   foldl (\ret card -> ret ++ (convertCardsToOptTuples fn (cardPermutations card))) [] $ mainCards hero
 
-type CardSetter = ASetter Card Card Integer Integer
 
 updateFields :: CardSetter -> Integer -> CardSetter -> Integer -> String -> String -> Card -> Card
 updateFields lens add lens2 add2 n1 n2 =

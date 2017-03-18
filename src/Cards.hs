@@ -2,6 +2,7 @@ module Cards where
 
 import Types
 import qualified Data.Char as C
+import qualified Data.List as L
 import Control.Lens
 
 cardTuples = [("Barrier Token",1,Universal,"4 Ability armor"),
@@ -40,7 +41,7 @@ cardTuples = [("Barrier Token",1,Universal,"4 Ability armor"),
               ("Bone Dice",3,Fury,"4 Crit Chance|Unique Passive:While Critically wounded,gain +20 critical chance."),
               ("Brand of the Ironeater",3,Fury,"4 Crit Chance|5 Lifesteal|Fully Upgraded Bonus:2.5 Lifesteal"),
               ("Brawler's Scythe",3,Universal,"6 Power|30 Mana|Unique Passive:+15 Damage bonus against Jungle minions."),
-              ("Brawler's Ward",3,Universal,"6 Power|30 Mana|Unique Active:Place a Shadow Ward to reveal the surrounding area for 1.5 minutes."),
+              ("Brawler's Ward",3,Universal,"12 Power|30 Mana|Unique Active:Place a Shadow Ward to reveal the surrounding area for 1.5 minutes."),
               ("Brightsteel Plate",3,Order,"7 Basic armor|8 Crit Chance|Fully Upgraded Bonus:7 Basic armor"),
               ("Burnblood Powder",3,Fury,"6 Power|0.3 Mana Regen|5.5 Attack Speed|Fully Upgraded Bonus:0.3 Mana Regen"),
               ("Burst-Engine",3,Intellect,"6 Power|0.3 Mana Regen|Fully Upgraded Bonus:12 Power"),
@@ -86,7 +87,7 @@ cardTuples = [("Barrier Token",1,Universal,"4 Ability armor"),
               ("Riftmagus Scepter",3,Universal,"6 Power|4 Crit Chance|Fully Upgraded Bonus:12 Power"),
               ("Rust-Breaker",3,Fury,"12 Power|4 Basic penetration|Fully Upgraded Bonus:6 Power"),
               ("Sage's Siphon",3,Universal,"6 Power|50 Health|Unique Passive:Basic attacks on Jungle Minions,restore 8 health."),
-              ("Sage's Ward",3,Universal,"6 Power|50 Health|Unique Active:Place a Shadow Ward to reveal the surrounding area for 1.5 minutes."),
+              ("Sage's Ward",3,Universal,"12 Power|50 Health|Unique Active:Place a Shadow Ward to reveal the surrounding area for 1.5 minutes."),
               ("Savage Remedy",3,Growth,"30 Mana|1.4 Health Regen|Fully Upgraded Bonus:2.8 Health Regen"),
               ("Scourging Tails",3,Corruption,"6 Power|Active: For 6 seconds,on hit with ability shred 20 Armor from target(s) for 15 seconds."),
               ("Seek and Destroy",3,Corruption,"6 Power|Unique Active:For 6 seconds +40 Movement speed +5.5 Attack speed for each nearby Bleeding unit. (Max - +280 Movement speed and +38.5 Attack speed)"),
@@ -211,32 +212,66 @@ cardTuples = [("Barrier Token",1,Universal,"4 Ability armor"),
               ("Hand of Prophets",10,Universal,"16 Ability penetration|150 Health")]
 
 
-parseBenefit "power" = (power, 1)
-parseBenefit "attackspeed" = (speed, 1)
-parseBenefit "critchance" = (crit, 1)
-parseBenefit "basicpenetration" = (pen, 1)
-parseBenefit "lifesteal" = (lifesteal, 1)
-parseBenefit "mana" = (mana, 1)
-parseBenefit "manaregen" = (manaRegen, 1)
-parseBenefit "health" = (health, 50)
-parseBenefit "healthregen" = (healthRegen, 1)
-parseBenefit "basicarmor" = (basicArmor, 1)
-parseBenefit "abilityarmor" = (abilityArmor, 1)
-parseBenefit "abilitypenetration" = (abilityPen, 2)
+parseBenefit :: (Fractional t) => String -> Maybe (CardSetter, t)
+parseBenefit "power" = Just (power, 6)
+parseBenefit "attackspeed" = Just (speed, 5.5)
+parseBenefit "critchance" = Just (crit, 4)
+parseBenefit "basicpenetration" = Just (pen, 4)
+parseBenefit "lifesteal" = Just (lifesteal, 2.5)
+parseBenefit "mana" = Just (mana, 30)
+parseBenefit "manaregen" = Just (manaRegen, 0.3)
+parseBenefit "health" = Just (health, 50)
+parseBenefit "healthregen" = Just (healthRegen, 1.4)
+parseBenefit "basicarmor" = Just (basicArmor, 7)
+parseBenefit "abilityarmor" = Just (abilityArmor, 4)
+parseBenefit "abilitypenetration" = Just (abilityPen, 2)
+parseBenefit "critbonus" = Just (crit_bonus, 100)
+parseBenefit _ = Nothing
 
 splitBy :: (Foldable t, Eq t1) => t1 -> t t1 -> [[t1]]
 splitBy delimiter = foldr f [[]]
             where f c l@(x:xs) | c == delimiter = []:l
                              | otherwise = (c:x):xs
 
+addPointsToCard :: Card -> String -> Maybe (CardSetter, Float) -> Card
+addPointsToCard card val (Just (field, ratio)) =
+  let points = truncate $ (read val :: Float) / ratio
+  in field +~ points $ card
+addPointsToCard card _ Nothing = card
+
+addBenefitToCard :: String -> Card -> Card
+addBenefitToCard benefitStr card =
+  let (val:benefit) = splitBy ' ' benefitStr
+  in
+    if val == "Fully" then
+      let [_,b] = splitBy ':' $ benefitStr
+      in addBenefitToCard b card
+    else addPointsToCard card val $ parseBenefit $ map C.toLower $ concat benefit
+
 parseCard :: String -> Card
 parseCard str =
   let d = defaultCard
       benefits = splitBy '|' str
-  in
-    foldr (\benefitStr card ->
-             let (val:benefit) = splitBy ' ' benefitStr
-                 (field, ratio) = parseBenefit $ map C.toLower $ concat benefit
-                 points = div (read val) ratio
-             in field +~ points $ card) d benefits
+  in foldr addBenefitToCard d benefits
 
+allCards :: [Card]
+allCards =
+  map (\(n, c, a, benefitStr) ->
+         let card = parseCard benefitStr
+             isWard = L.isInfixOf "ward" $ map C.toLower n
+             isBlink = L.isInfixOf "link" $ map C.toLower n
+         in (name .~ n) .
+            (cost .~ c) .
+            (ward .~ if isWard then 1 else 0) .
+            (blink .~ if isBlink then 1 else 0) .
+            (afinity .~ a) $ card) cardTuples
+
+bestCarryCards :: [Afinity] -> [Card]
+bestCarryCards as =
+  filter (\c -> (elem (c^.afinity) as || c^.afinity == Universal)
+           && (c^.blink == 1
+               || (c^.ward == 1 && c^.power > 1)
+               || c^.crit_bonus == 1
+               || (c^.cost == 3 && c^.power + c^.speed + c^.crit + c^.pen + c^.lifesteal == 4)
+               || (c^.cost == 2 && c^.power + c^.speed + c^.crit + c^.pen + c^.lifesteal == 3))
+         ) allCards
