@@ -54,7 +54,7 @@ calcIfUnder hero_name dmg speed crit pen critbonus max ward blink ls en_armor =
 -- wards, blink, and crit bonus take up extra because of the missed opportunity cost
 -- of the "completed" bonus another card would offer. Wards are 3cxp for 2pwr, so
 -- (-2 a full power card and -1 for opportunty)
-maxDps :: Bool -> Bool -> Integer -> String -> Integer -> Double -> [Build]
+maxDps :: Bool -> Bool -> Integer -> String -> Integer -> Double -> Build
 maxDps w b lifeSteal hero_name reduce_by en_armor =
   let totalPoints = 66 -- counts the bonus +1 of the 6 cards
       ward = if w then 1 else 0
@@ -67,5 +67,4 @@ maxDps w b lifeSteal hero_name reduce_by en_armor =
                  crit <- [0..30],
                  pen <- [0..maxPen],
                  critbonus <- [0..1]]
-      builds = take 3 $ sortBy (flip compare `on` _bdps) totals
-  in builds
+  in head $ sortBy (flip compare `on` _bdps) totals

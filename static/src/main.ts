@@ -34,9 +34,9 @@ function renderDps(build :Build)  {
         td('.crit', build._bcrit),
         td('.pen', build._bpen),
         td('.lifesteal', build._blifesteal),
-        td('.crit_bonus', build._bcrit_bonus),
-        td('.ward', build._bward),
-        td('.blink', build._bblink),
+        td('.crit_bonus', build._bcrit_bonus==0?"False":"True"),
+        td('.ward', build._bward==0?"False":"True"),
+        td('.blink', build._bblink==0?"False":"True"),
         button('.optimize', {attrs: {'data-build': JSON.stringify(build)}}, 'Optimize')
     ]);
 }
@@ -59,10 +59,13 @@ function enemyArmorDropDown() {
 function view(state$ : any) {
     return state$
         .map(({hand, dps, ward, blink, optBuild, lifesteal, loading, hero}) => {
-            var header = [tr('.header', [th('dps'), th('power'), th('speed'), th('crit'), th('pen'), th('lifesteal'), th('crit_bonus'), th('ward'), th('blink')])];
-            var tdata = dps==null?[]:dps.map((item, idx) => renderDps(item))
-            var hand = ul(hand.length==0?[]:hand.map((item, idx) => li([item.count, item.info])))
-
+            var header = [tr('.header', [th('DPS'), th('Power'), th('Attack Speed'), th('Crit Chance'), th('Basic Pen'), th('Lifesteal'), th('Crit Bonus'), th('Ward'), th('Blink')])];
+            var handDisplay =
+                ((hand==null||hand.length==0)?div(["Click Optimize To Build Deck"]):
+                  div([
+                      div(["Optimal Final Build"]),
+                      ul(hand.map((item, idx) => li([item.count, item.info])))
+                  ]));
             return div('.dps', [
                 div([
                     div([select('.hero', [option({attrs: {value: 'murdock'}}, 'Murdock'),
@@ -79,10 +82,10 @@ function view(state$ : any) {
                 button('.get-dps', 'Get dps'),
 
                 div('.build-details', [
-                    table('.builds', header.concat(tdata))
+                    table('.builds', {attrs:{border:1}}, header.concat([dps==null?null:renderDps(dps)]))
                 ]),
 
-                (loading? "Loading" : hand)
+                (loading ? "Loading" : handDisplay)
 
             ])
         });
@@ -154,14 +157,14 @@ function intent(dom) {
 function model(http, actions) {
     const dpsResponse$ = http.select('dps')
         .flatten()
-        .map(res => res.body as Build[])
-        .startWith([]);
+        .map(res => res.body as Build)
+        .startWith(null);
     const optimizeResponse$ = http.select('optimize')
         .flatten()
         .map(res => {
             return res.body as HandCard[]
         })
-        .startWith([]);
+        .startWith();
 
     const loadingOptimize$ = xs.merge(actions.optimizeRequest$.mapTo(true),
                                       optimizeResponse$.mapTo(false),
