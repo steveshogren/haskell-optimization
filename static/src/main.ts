@@ -20,6 +20,7 @@ type Build = {
     _bspeed: number,
     _bcrit: number,
     _bpen: number,
+    _bcheapCrit: boolean,
     _blifesteal: number,
     _bcrit_bonus: number,
     _bward: number,
@@ -74,6 +75,7 @@ function view(state$ : any) {
                                           option({attrs: {value: 'grim'}}, 'Grim.EXE'),
                                          ])
                          , 'Hero?']),
+                    div([input('.cheapCrit', {attrs: {type: 'checkbox'}}), '9 Point Crit Bonus?']),
                     div([input('.ward', {attrs: {type: 'checkbox'}}), 'Ward?']),
                     div([input('.blink', {attrs: {type: 'checkbox'}}), 'Blink?']),
                     div([lifeStealDropDown(), 'Lifesteal']),
@@ -105,6 +107,7 @@ function intent(dom) {
 
     const changeWard$ = checkboxBoolean(dom.select('.ward'));
     const changeBlink$ = checkboxBoolean(dom.select('.blink'));
+    const changeCheapCritBonus$ = checkboxBoolean(dom.select('.cheapCrit'));
 
     const changeEArmor$ = dom.select('.en_armor')
         .events('change')
@@ -130,15 +133,21 @@ function intent(dom) {
     const dpsRequest$ = xs.combine(dom.select('.get-dps').events('click'),
                                    changeWard$,
                                    changeBlink$,
+                                   changeCheapCritBonus$,
                                    changeLs$,
                                    changeEArmor$,
                                    changeHero$)
-        .map(([clickedEvent, ward, blink, ls, enArmor, hero]) => {
+        .map(([clickedEvent, ward, blink, cheapCrit, ls, enArmor, hero]) => {
             return {
                 url: '/dps',
                 category: 'dps',
                 method: 'POST',
-                send: {has_blink: blink, has_ward: ward, desired_lifesteal: ls, enemy_armor: enArmor, hero_name: hero}
+                send: {has_blink: blink,
+                       has_ward: ward,
+                       desired_lifesteal: ls,
+                       enemy_armor: enArmor,
+                       hero_name: hero,
+                       cheap_crit:cheapCrit}
             };
         });
 
@@ -185,7 +194,6 @@ function model(http, actions) {
 }
 
 function main(sources: {DOM: DOMSource, HTTP: HTTPSource}) {
-
     const actions = intent(sources.DOM);
     const state$ = model(sources.HTTP, actions);
     const vdom$ = view(state$);

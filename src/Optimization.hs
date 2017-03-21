@@ -51,9 +51,9 @@ convertCardsToOptTuples :: (Card -> t) -> [Card] -> [OptTuple t]
 convertCardsToOptTuples fn permutations =
   map (\next -> (fn next, (_name next))) permutations
 
-collectAllPermutations :: Hero -> (Card -> t) -> [OptTuple t]
-collectAllPermutations hero fn =
-  foldl (\ret card -> ret ++ (convertCardsToOptTuples fn (cardPermutations card))) [] $ mainCards hero
+collectAllPermutations :: Hero -> (Card -> t) -> Bool -> [OptTuple t]
+collectAllPermutations hero fn useCheapCrit =
+  foldl (\ret card -> ret ++ (convertCardsToOptTuples fn (cardPermutations card useCheapCrit))) [] $ mainCards hero
 
 
 updateFields :: CardSetter -> Integer -> CardSetter -> Integer -> String -> String -> Card -> Card
@@ -90,21 +90,25 @@ formatCardName hasAny card newCost ac bc =
 xor :: Bool -> Bool -> Bool
 xor a b = (a || b) && not (a && b)
 
-oneTypeCardPermutations :: Card -> [Card]
-oneTypeCardPermutations card =
+oneTypeCardPermutations :: Card -> Bool -> [Card]
+oneTypeCardPermutations card cheapCrit =
   let hasPower = _power card > 0
       hasSpeed = _speed card > 0
       hasCrit = _crit card > 0
       hasPen = _pen card > 0
       hasLS = _lifesteal card > 0
+      useCheapCrit = (card^.crit_bonus == 1) && cheapCrit
+      upgrades = if useCheapCrit then [3] else oneCardUpgrades
   in concatMap (\c -> map (\(type1Cost) ->
                             let nc = cardFields hasPower hasSpeed hasCrit hasPen hasLS card type1Cost 0
                                 newCost = (nc^.cost) + type1Cost
                             in nc { _name = formatCardName True nc newCost type1Cost 0,
-                                    _cost = newCost}) oneCardUpgrades) [1..1]
+                                    _cost = newCost})
+                 upgrades)
+     [1..1]
 
-cardPermutations :: Card -> [Card]
-cardPermutations card =
+cardPermutations :: Card -> Bool -> [Card]
+cardPermutations card useCheapCrit =
   let hasPower = _power card > 0
       hasSpeed = _speed card > 0
       hasCrit = _crit card > 0
@@ -113,7 +117,7 @@ cardPermutations card =
       hasAny = hasPower || hasSpeed || hasCrit || hasPen || hasLS
       hasOne  = hasPower `xor` hasSpeed `xor` hasCrit `xor` hasPen `xor` hasLS
   in
-    if hasOne then oneTypeCardPermutations card
+    if hasOne then oneTypeCardPermutations card useCheapCrit
     else if not hasAny then [card { _name = formatCardName False card (card^.cost) 0 0}]
     else concatMap (\c -> map (\(type1Cost, type2Cost) ->
                                  let nc = cardFields hasPower hasSpeed hasCrit hasPen hasLS card type1Cost type2Cost
@@ -130,18 +134,19 @@ totalCards = 6
 lpCards :: Build -> LP String Integer
 lpCards build = execLPM $ do
   let hero = heroFromName $ build^.bhero
-  equalTo (linCombination (collectAllPermutations hero _cost)) totalCXP
-  geqTo (linCombination (collectAllPermutations hero _power)) (build^.bpower)
-  geqTo (linCombination (collectAllPermutations hero _speed)) (build^.bspeed)
-  geqTo (linCombination (collectAllPermutations hero _crit)) (build^.bcrit)
-  geqTo (linCombination (collectAllPermutations hero _pen)) (build^.bpen)
-  geqTo (linCombination (collectAllPermutations hero _lifesteal)) (build^.blifesteal)
-  geqTo (linCombination (collectAllPermutations hero _crit_bonus)) (build^.bcrit_bonus)
-  geqTo (linCombination (collectAllPermutations hero _ward)) (build^.bward)
-  geqTo (linCombination (collectAllPermutations hero _blink)) (build^.bblink)
-  equalTo (linCombination (map (\(_,n) -> (1, n)) $ collectAllPermutations hero _power)) totalCards
-  mapM (\(_,n) -> setVarKind n IntVar) $ collectAllPermutations hero _power
-  mapM (\(_,n) -> varBds n 0 1) $ collectAllPermutations hero _power
+  let useCheapCrit = (build^.bcheapCrit)
+  equalTo (linCombination (collectAllPermutations hero _cost useCheapCrit)) totalCXP
+  geqTo (linCombination (collectAllPermutations hero _power useCheapCrit)) (build^.bpower)
+  geqTo (linCombination (collectAllPermutations hero _speed useCheapCrit)) (build^.bspeed)
+  geqTo (linCombination (collectAllPermutations hero _crit useCheapCrit)) (build^.bcrit)
+  geqTo (linCombination (collectAllPermutations hero _pen useCheapCrit)) (build^.bpen)
+  geqTo (linCombination (collectAllPermutations hero _lifesteal useCheapCrit)) (build^.blifesteal)
+  equalTo (linCombination (collectAllPermutations hero _crit_bonus useCheapCrit)) (build^.bcrit_bonus)
+  equalTo (linCombination (collectAllPermutations hero _ward useCheapCrit)) (build^.bward)
+  equalTo (linCombination (collectAllPermutations hero _blink useCheapCrit)) (build^.bblink)
+  equalTo (linCombination (map (\(_,n) -> (1, n)) $ collectAllPermutations hero _power useCheapCrit)) totalCards
+  mapM (\(_,n) -> setVarKind n IntVar) $ collectAllPermutations hero _power useCheapCrit
+  mapM (\(_,n) -> varBds n 0 1) $ collectAllPermutations hero _power useCheapCrit
 
 
 solverFailed :: IO [HandCard]

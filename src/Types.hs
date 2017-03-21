@@ -36,6 +36,7 @@ data Build = Build {
   _blifesteal :: Integer,
   _bcrit_bonus :: Integer,
   _bward :: Integer,
+  _bcheapCrit :: Bool,
   _bblink :: Integer,
   _bhero :: String
   } deriving (Show, Generic)
@@ -159,6 +160,7 @@ heroFromName _ = toHero 0 0 0 0 0 []
 data UISetting = UISetting { hero_name :: String
                            , has_blink :: Bool
                            , has_ward :: Bool
+                           , cheap_crit :: Bool
                            , enemy_armor :: Double
                            , desired_lifesteal :: Integer}
              deriving (Show, Generic)

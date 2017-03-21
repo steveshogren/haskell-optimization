@@ -24,7 +24,7 @@ main = do
 
     post "/dps" $ do
       s <- jsonData :: ActionM UISetting
-      json $ DP.maxDps (has_ward s) (has_blink s) (desired_lifesteal s) (hero_name s) 0 (enemy_armor s)
+      json $ DP.maxDps (has_ward s) (has_blink s) (cheap_crit s) (desired_lifesteal s) (hero_name s) 0 (enemy_armor s) 
     post "/optimize" $ do
       build <- jsonData :: ActionM OP.Build
       r <- liftIO $ OP.optimize build
