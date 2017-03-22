@@ -71,7 +71,6 @@ cardFields False True False False True card a b = updateFields speed a lifesteal
 cardFields False False True True False card a b = updateFields crit a pen b "crit" "pen" card
 cardFields False False True False True card a b = updateFields crit a lifesteal b "crit" "lifesteal" card
 cardFields False False False True True card a b = updateFields pen a lifesteal b "pen" "lifesteal" card
-cardFields False False False False True card a b = updateFields lifesteal a lifesteal b "lifesteal" "lifesteal" card
 cardFields True False False False False card a b = updateFields power a power b "power" "power" card
 cardFields False True False False False card a b = updateFields speed a speed b "speed" "speed" card
 cardFields False False True False False card a b = updateFields speed a speed b "crit" "crit" card
@@ -122,7 +121,7 @@ cardPermutations card useCheapCrit =
     else concatMap (\c -> map (\(type1Cost, type2Cost) ->
                                  let nc = cardFields hasPower hasSpeed hasCrit hasPen hasLS card type1Cost type2Cost
                                      newCost = if hasAny then (nc^.cost) + type1Cost + type2Cost else (nc^.cost)
-                                 in nc { _name = formatCardName hasAny nc newCost type1Cost type2Cost,
+                                 in nc { _name = (show c) ++ formatCardName hasAny nc newCost type1Cost type2Cost,
                                          _cost = newCost})
                           twoCardUpgrades) [1..1]
 
@@ -136,17 +135,17 @@ lpCards build = execLPM $ do
   let hero = heroFromName $ build^.bhero
   let useCheapCrit = (build^.bcheapCrit)
   equalTo (linCombination (collectAllPermutations hero _cost useCheapCrit)) totalCXP
-  geqTo (linCombination (collectAllPermutations hero _power useCheapCrit)) (build^.bpower)
-  geqTo (linCombination (collectAllPermutations hero _speed useCheapCrit)) (build^.bspeed)
-  geqTo (linCombination (collectAllPermutations hero _crit useCheapCrit)) (build^.bcrit)
-  geqTo (linCombination (collectAllPermutations hero _pen useCheapCrit)) (build^.bpen)
-  geqTo (linCombination (collectAllPermutations hero _lifesteal useCheapCrit)) (build^.blifesteal)
+  equalTo (linCombination (collectAllPermutations hero _power useCheapCrit)) (build^.bpower)
+  equalTo (linCombination (collectAllPermutations hero _speed useCheapCrit)) (build^.bspeed)
+  equalTo (linCombination (collectAllPermutations hero _crit useCheapCrit)) (build^.bcrit)
+  equalTo (linCombination (collectAllPermutations hero _pen useCheapCrit)) (build^.bpen)
+  equalTo (linCombination (collectAllPermutations hero _lifesteal useCheapCrit)) (build^.blifesteal)
   equalTo (linCombination (collectAllPermutations hero _crit_bonus useCheapCrit)) (build^.bcrit_bonus)
   equalTo (linCombination (collectAllPermutations hero _ward useCheapCrit)) (build^.bward)
   equalTo (linCombination (collectAllPermutations hero _blink useCheapCrit)) (build^.bblink)
   equalTo (linCombination (map (\(_,n) -> (1, n)) $ collectAllPermutations hero _power useCheapCrit)) totalCards
-  mapM (\(_,n) -> setVarKind n IntVar) $ collectAllPermutations hero _power useCheapCrit
-  mapM (\(_,n) -> varBds n 0 1) $ collectAllPermutations hero _power useCheapCrit
+  mapM (\(_,name) -> varBds name 0 1) $ collectAllPermutations hero _power useCheapCrit
+  mapM (\(_,name) -> setVarKind name IntVar) $ collectAllPermutations hero _power useCheapCrit
 
 
 solverFailed :: IO [HandCard]
@@ -156,7 +155,7 @@ optimize :: Build -> IO [HandCard]
 optimize b = do
   x <- glpSolveVars mipDefaults (lpCards b)
   case x of (Success, Just (obj, vars)) ->
-              let cards = (map toHandCard) $ filter (\(name, count) -> count > 0) $ Map.toList vars
+              let cards = (map toHandCard) $ filter (\(name, count) -> count /= 0) $ Map.toList vars
               in if null cards then solverFailed
                  else return cards
             (failure, result) -> solverFailed

@@ -1,10 +1,18 @@
 module CardsTest where
 
 import Cards
+import qualified Optimization as OP
+import qualified DamagePen as DP
 import Types
 import Test.Tasty
 import Test.Tasty.HUnit
 import Control.Lens
+
+testOptimization :: IO ()
+testOptimization = do
+  let build = DP.maxDps False True False 0 "sparrow" 0 31.5
+  cards <- OP.optimize build
+  (assertEqual ("card count: " ++ show cards)  6 (length cards))
 
 testWards :: IO ()
 testWards =
@@ -63,4 +71,5 @@ tests2 = testGroup "Parsing Tests"
     , testCase "parse fully upgraded bonus" testParseFullyUpgraded
     , testCase "wards" testWards
     , testCase "blink" testBlink
+    , testCase "optimiztion" testOptimization
   ]

@@ -50,6 +50,7 @@ toBuild (dps,dmg,speed,crit,pen,critbonus, ward, blink, ls, hero) =
         , _bdps = dps
         , _bspeed = speed
         , _bcrit = crit
+        , _bcheapCrit = False
         , _bpen = pen
         , _blifesteal = ls
         , _bcrit_bonus = critbonus
