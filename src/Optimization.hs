@@ -73,9 +73,9 @@ cardFields False False True False True card a b = updateFields crit a lifesteal 
 cardFields False False False True True card a b = updateFields pen a lifesteal b "pen" "lifesteal" card
 cardFields True False False False False card a b = updateFields power a power b "power" "power" card
 cardFields False True False False False card a b = updateFields speed a speed b "speed" "speed" card
-cardFields False False True False False card a b = updateFields speed a speed b "crit" "crit" card
-cardFields False False False True False card a b = updateFields speed a speed b "pen" "pen" card
-cardFields False False False False True card a b = updateFields speed a speed b "lifesteal" "lifesteal" card
+cardFields False False True False False card a b = updateFields crit a crit b "crit" "crit" card
+cardFields False False False True False card a b = updateFields pen a pen b "pen" "pen" card
+cardFields False False False False True card a b = updateFields lifesteal a lifesteal b "lifesteal" "lifesteal" card
 cardFields False False False False False card a b = card
 
 formatCardName :: Bool -> Card -> Integer -> Integer -> Integer -> String
