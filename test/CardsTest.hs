@@ -14,6 +14,13 @@ testOptimization = do
   cards <- OP.optimize build
   (assertEqual ("card count: " ++ show cards)  6 (length cards))
 
+testOptimization2 :: IO ()
+testOptimization2 = do
+  let build = DP.maxDps False False False 4 "murdock" 0 31.5
+  cards <- OP.optimize build
+  (putStrLn $ show cards)
+    >> (assertEqual ("card count: " ++ show cards)  7 (length cards))
+
 testWards :: IO ()
 testWards =
   let wardCards = map _name $ filter (\c -> c^.ward == 1) allCards
@@ -72,4 +79,5 @@ tests2 = testGroup "Parsing Tests"
     , testCase "wards" testWards
     , testCase "blink" testBlink
     , testCase "optimiztion" testOptimization
+    , testCase "optimiztion2" testOptimization2
   ]

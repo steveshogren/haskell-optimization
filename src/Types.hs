@@ -151,7 +151,7 @@ toHero bd att bas sc l afs = Hero { _base_damage = bd, _attack_speed = bas, _sca
 -- Hero
 
 heroFromName "murdock" = toHero   86   1.35 116.8 1    15 [Fury, Intellect]
-heroFromName "sparrow" = toHero   64   1.2  139.2 1    15 [Growth, Intellect]
+heroFromName "sparrow" = toHero   64   1.2  139.2 1    15 [Growth, Order]
 heroFromName "grim" = toHero      77.4 1.2  139.2 0.85 15 [Fury, Corruption]
 heroFromName "twinblast" = toHero 68.2 1.0  100.0 0.8  15 [Growth, Fury]
 heroFromName _ = toHero 0 0 0 0 0 []
