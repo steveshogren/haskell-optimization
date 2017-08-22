@@ -6,20 +6,27 @@ import qualified DamagePen as DP
 import Types
 import Test.Tasty
 import Test.Tasty.HUnit
+import Data.List
 import Control.Lens
 
 testOptimization :: IO ()
 testOptimization = do
+  let build = DP.maxDps False False False 4 "sparrow" 0 31.5
+  cards <- OP.optimize build
+  (assertEqual ("card count: " ++ show cards)  6 (length cards))
+
+testOptimization3 :: IO ()
+testOptimization3 = do
   let build = DP.maxDps False True False 0 "sparrow" 0 31.5
   cards <- OP.optimize build
   (assertEqual ("card count: " ++ show cards)  6 (length cards))
 
 testOptimization2 :: IO ()
 testOptimization2 = do
-  let build = DP.maxDps False False False 4 "murdock" 0 31.5
+  let build = DP.maxDps False False True 0 "sparrow" 0 31.5
   cards <- OP.optimize build
-  (putStrLn $ show cards)
-    >> (assertEqual ("card count: " ++ show cards)  7 (length cards))
+  (putStrLn $ show $ cards)
+    >> (assertEqual ("card count: " ++ show cards)  6 (length cards))
 
 testWards :: IO ()
 testWards =
@@ -80,4 +87,5 @@ tests2 = testGroup "Parsing Tests"
     , testCase "blink" testBlink
     , testCase "optimiztion" testOptimization
     , testCase "optimiztion2" testOptimization2
+    , testCase "optimiztion3" testOptimization3
   ]

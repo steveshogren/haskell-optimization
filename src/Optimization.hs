@@ -124,7 +124,7 @@ cardPermutations card useCheapCrit =
                                      newCost = if hasAny then (nc^.cost) + type1Cost + type2Cost else (nc^.cost)
                                  in nc { _name = (show c) ++ formatCardName hasAny nc newCost type1Cost type2Cost,
                                          _cost = newCost})
-                          twoCardUpgrades) [1..3]
+                          twoCardUpgrades) [1..2]
 
 totalCXP :: Integer
 totalCXP = 60
